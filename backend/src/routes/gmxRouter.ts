@@ -26,7 +26,7 @@ router.post("/order", async (req: any, res: any) => {
 
         if (approve) {
 
-            //calll the  createIncreaseOrder and passing the params
+            //call the  createIncreaseOrder and passing the params
 
             const order = await GmxWrapper.createIncreaseOrder(_params)
 

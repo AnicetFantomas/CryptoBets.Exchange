@@ -53,7 +53,7 @@ class GMX {
 
             const contract = await this.approveContractGMX()
 
-            const approveTx = await contract.approvePlugin(orderBookAddress)
+            const approveTx = await contract.callStatic.approvePlugin(orderBookAddress)
 
             return approveTx
 
@@ -74,7 +74,7 @@ class GMX {
         _indexToken: string,
         _minOut: number,
         _sizeDelta: number,
-        _collateralToken: string,
+        _collateralToken: any,
         _isLong: boolean,
         _triggerPrice: number,
         _triggerAboveThreshold: boolean,
@@ -100,7 +100,7 @@ class GMX {
 
             const contract = await this.orderBookContractGMX()
 
-            const cretateOrderTx = await contract.createIncreaseOrder(
+            const cretateOrderTx = await contract.callStatic.createIncreaseOrder(
                 _path,
                 _amountIn,
                 _indexToken,
