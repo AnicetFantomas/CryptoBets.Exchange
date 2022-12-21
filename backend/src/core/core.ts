@@ -1,6 +1,6 @@
 import { Contract, providers, Wallet } from "ethers"
 import { config } from "../config"
-import { GMX_ROUTER_ABI } from "../constants/constants"
+import { GMX_ROUTER_ABI, ORDER_BOOK_ABI } from "../constants/constants"
 
 
 export class GMX {
@@ -15,6 +15,25 @@ export class GMX {
         this.spender = config.SPENDER_ADDRESS
 
     }
+
+
+    /**
+     * 
+     * @returns  a contract instance for the order book contract
+     */
+
+    orderBookContractGMX = async () => {
+        return new Contract(
+            config.ORDER_BOOK_ROUTER,
+            ORDER_BOOK_ABI,
+            this.signer
+        )
+    }
+
+    /**
+     * 
+     * @returns a contract instance for approval
+     */
 
     approveContractGMX = async () => {
         return new Contract(
@@ -45,6 +64,69 @@ export class GMX {
             console.log("Unable to approve contract", error)
         }
 
+    }
+
+    /**
+     * 
+     * @param _params these are the inputs required to place an order in GMX 
+     */
+
+    createIncreaseOrder = async (_params: {
+        _path: string[],
+        _amountIn: number,
+        _indexToken: string,
+        _minOut: number,
+        _sizeDelta: number,
+        _collateralToken: string,
+        _isLong: boolean,
+        _triggerPrice: number,
+        _triggerAboveThreshold: boolean,
+        _executionFee: number,
+        _shouldWrap: boolean
+
+    }) => {
+        try {
+
+            const {
+                _path,
+                _amountIn,
+                _indexToken,
+                _minOut,
+                _sizeDelta,
+                _collateralToken,
+                _isLong,
+                _triggerPrice,
+                _triggerAboveThreshold,
+                _executionFee,
+                _shouldWrap } = _params
+
+
+            const contract = await this.orderBookContractGMX()
+
+            const cretateOrderTx = await contract.createIncreaseOrder(
+                _path,
+                _amountIn,
+                _indexToken,
+                _minOut,
+                _sizeDelta,
+                _collateralToken,
+                _isLong,
+                _triggerPrice,
+                _triggerAboveThreshold,
+                _executionFee,
+                _shouldWrap
+
+            )
+
+            console.log("CreateOrderTx", cretateOrderTx)
+
+
+            return cretateOrderTx
+
+
+        } catch (error) {
+            console.log("Unable to place an order to GMX", error)
+        }
     }
 
 

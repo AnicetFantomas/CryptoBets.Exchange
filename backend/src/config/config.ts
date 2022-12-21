@@ -6,7 +6,9 @@ export const config = {
 
     PRIVATE_KEY: process.env.PRIVATE_KEY!,
 
-    JSON_RPC: process.env.JSON_RPC!
+    JSON_RPC: process.env.JSON_RPC!,
+
+    ORDER_BOOK_ROUTER: process.env.ORDER_BOOK_ROUTER!
 
 
 }
