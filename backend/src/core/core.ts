@@ -100,7 +100,7 @@ class GMX {
 
             const contract = await this.orderBookContractGMX()
 
-            const cretateOrderTx = await contract.createIncreaseOrder(
+            const createOrderTx = await contract.callStatic.createIncreaseOrder(
                 _path,
                 _amountIn,
                 _indexToken,
@@ -115,10 +115,10 @@ class GMX {
 
             )
 
-            console.log("CreateOrderTx", cretateOrderTx)
+            console.log("CreateOrderTx", createOrderTx)
 
 
-            return cretateOrderTx
+            return createOrderTx
 
 
         } catch (error) {

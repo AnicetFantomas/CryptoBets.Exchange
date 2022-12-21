@@ -4,7 +4,8 @@
   "main": "src/index.ts",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node-dev -r dotenv/config src/index.ts"
+    "start": "ts-node-dev -r dotenv/config src/index.ts",
+    "test": "ts-node-dev src/test/testCreateOrder.t.ts"
   },
   "dependencies": {
     "body-parser": "^1.20.1",
