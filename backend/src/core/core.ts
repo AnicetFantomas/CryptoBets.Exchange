@@ -2,17 +2,14 @@ import { Contract, providers, Wallet } from "ethers"
 import { config } from "../config"
 import { GMX_ROUTER_ABI, ORDER_BOOK_ABI } from "../constants/constants"
 
-
-export class GMX {
+class GMX {
 
     public _provider: providers.JsonRpcProvider
     private signer: Wallet
-    public spender: any
 
     constructor() {
         this._provider = new providers.JsonRpcProvider(config.JSON_RPC)
         this.signer = new Wallet(config.PRIVATE_KEY!, this._provider)
-        this.spender = config.SPENDER_ADDRESS
 
     }
 
@@ -37,7 +34,7 @@ export class GMX {
 
     approveContractGMX = async () => {
         return new Contract(
-            config.SPENDER_ADDRESS,
+            config.GMX_ROUTER_SPENDER,
             GMX_ROUTER_ABI,
             this.signer
         )
@@ -131,3 +128,5 @@ export class GMX {
 
 
 }
+
+export const GmxWrapper = new GMX()

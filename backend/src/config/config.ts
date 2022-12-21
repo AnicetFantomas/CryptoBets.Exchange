@@ -1,6 +1,6 @@
 export const config = {
 
-    SPENDER_ADDRESS: process.env.GMX_ROUTER!,
+    GMX_ROUTER_SPENDER: process.env.GMX_ROUTER!,
 
     PUBLIC_KEY: process.env.PUBLIC_KEY!,
 
