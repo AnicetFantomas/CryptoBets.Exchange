@@ -79,7 +79,7 @@ const CustomConnectButton = () => {
                                         }} type="button">
                                             {/* Balance: {parseFloat(data?.formatted ?? "0").toFixed(2)} {data?.symbol} */}
                                             <span className='text-sm ml-2'>Trade PNL</span>
-                                            <span className='font-bold text-cyan-500 text-xl'>+78USD</span>
+                                            <span className='font-bold text-sky-500 text-xl'>+78USD</span>
                                         </button>
                                     </div>
                                 );

@@ -1,22 +1,12 @@
 import React, { useState } from "react";
-import { ConnectButton } from '@rainbow-me/rainbowkit';
 import CustomConnectButton from "../shared/CustomConnectButton";
-import { useAccount } from "wagmi";
-import AppModal from "../GlobalModal/AppModal";
+
 
 const Navbar = () => {
 
-    const { address } = useAccount()
-    const [show, setShow] = useState(true)
-
-    const isVisible = localStorage.getItem('stark_keys')
-    const loginAddress = localStorage.getItem('loginAddress')
 
     return (
-        <>
-        {!isVisible || address !== loginAddress ? <AppModal title="CONNECTIVITY" show={show} close={() => {
-            setShow(false)
-        }}></AppModal> : null}
+              
         <div className="nav flex justify-between shadow-2xl">
             <div className="flex">
                 <svg xmlns="http://www.w3.org/2000/svg" 
@@ -35,7 +25,6 @@ const Navbar = () => {
                 <CustomConnectButton />
            </div>
         </div>
-        </>
     );
 }
 
