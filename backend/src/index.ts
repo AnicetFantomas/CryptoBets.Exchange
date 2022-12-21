@@ -19,7 +19,7 @@ const corsOptions = {
 app.use(cors(corsOptions))
 
 //TODO: initialize routes
-
+app.use("/api", require("./routes/gmxRouter"));
 
 
 //listening for requests 
