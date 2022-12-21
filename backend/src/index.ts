@@ -18,7 +18,9 @@ const corsOptions = {
 
 app.use(cors(corsOptions))
 
-//initialize routes
+//TODO: initialize routes
+
+
 
 //listening for requests 
 const PORT = process.env.PORT || 3000;
