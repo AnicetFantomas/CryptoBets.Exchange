@@ -9,3 +9,16 @@
 .menu {
   color: white;
 }
+
+@media screen and (max-width: 768px) {
+    #txt-title {
+        font-size: 18px;
+        margin-top: 8px;
+    }
+
+    .menu {
+        height: 30px;
+        width: 30px;
+        margin-left: 7px;
+    }
+}
