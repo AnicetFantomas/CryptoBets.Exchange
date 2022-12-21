@@ -10,6 +10,7 @@ function valuetext(value: number) {
 const LevSlider = () => {
     return (
         <div className="m-5 flex flex-col ">
+            <h2 className='self-start my-5'>Leverage</h2>
             <div className=' flex self-center'>
                 <div className='mx-11 flex flex-col items-center hover:text-blue-200 cursor-pointer'>
                     <div>0</div>
@@ -26,7 +27,7 @@ const LevSlider = () => {
                 <div className='mr-10 flex flex-col items-center hover:text-blue-200 cursor-pointer'>
                     <div>40</div>   
                 </div>
-                <div className='mr-11 flex flex-col items-center'>
+                <div className='mr-11 flex flex-col items-center hover:text-blue-200 cursor-pointer'>
                     <div>50</div>
                 </div>
             </div>
