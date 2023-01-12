@@ -1,6 +1,6 @@
 import { Contract, providers, Wallet } from "ethers"
 import { config } from "../config"
-import { GMX_ROUTER_ABI, ORDER_BOOK_ABI } from "../constants/constants"
+import { GMX_ROUTER_ABI, ORDER_BOOK_ABI, POSITION_ROUTER_ABI } from "../constants/constants"
 
 class GMX {
 
@@ -25,6 +25,18 @@ class GMX {
             ORDER_BOOK_ABI,
             this.signer
         )
+    }
+
+    /**
+     * @returns a contract instance for the positionRouter
+     */
+    positionRouterContractsGMx = async () => {
+        return new Contract(
+            config.GMX_POSITION_ROUTER,
+            POSITION_ROUTER_ABI,
+            this.signer
+        )
+
     }
 
     /**
@@ -163,9 +175,9 @@ class GMX {
 
             } = _params
 
-            const contract = await this.orderBookContractGMX()
+            const contract = await this.positionRouterContractsGMx()
 
-            const createDecreaseOrderTx = await contract.callStatic.createDecreaseOrder(
+            const createDecreaseOrderTx = await contract.callStatic.createDecreasePosition(
 
                 _path,
                 _indexToken,

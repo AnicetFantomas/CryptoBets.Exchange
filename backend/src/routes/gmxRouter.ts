@@ -39,27 +39,29 @@ router.post("/long", async (req: any, res: any) => {
 
 })
 
-router.post("/short", async (req: any, res: any) => {
+router.post("/close", async (req: any, res: any) => {
     try {
         const _params: {
-            _indexToken: any,
-            _sizeDelta: any,
-            _collateralToken: any,
+            _path: string[],
+            _indexToken: string,
             _collateralDelta: any,
-            _isLong: any,
-            _triggerPrice: any,
-            _triggerAboveThreshold: any,
+            _sizeDelta: any,
+            _isLong: boolean,
+            _receiver: string,
+            _acceptablePrice: any,
+            _minOut: any,
+            _executionFee: any,
+            _withdrawETH: boolean,
+            _callbackTarget: string
         } = req.body
 
         //approve the GMX_POSITION_ROUTER before creating a short order
-
         const approve = await GmxWrapper.approvePlugin(config.GMX_POSITION_ROUTER)
 
         if (approve) {
 
-            //call the  createIncreaseOrder and passing the params
-
-            //const order = await GmxWrapper.createDecreasePosition(_params)
+            //closes the long position
+            const order = await GmxWrapper.createDecreasePosition(_params)
 
 
         }
