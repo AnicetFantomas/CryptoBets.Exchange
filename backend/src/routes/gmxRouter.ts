@@ -55,12 +55,12 @@ router.post("/close", async (req: any, res: any) => {
             _callbackTarget: string
         } = req.body
 
-        //approve the GMX_POSITION_ROUTER before creating a short order
+        //approve the GMX_POSITION_ROUTER before closing a position order
         const approve = await GmxWrapper.approvePlugin(config.GMX_POSITION_ROUTER)
 
         if (approve) {
 
-            //closes the long position
+            //closes the position
             const order = await GmxWrapper.createDecreasePosition(_params)
 
 
