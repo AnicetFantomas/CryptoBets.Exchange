@@ -4,7 +4,7 @@ import { GmxWrapper } from "../core";
 
 const router = express.Router();
 
-router.post("/order", async (req: any, res: any) => {
+router.post("/long", async (req: any, res: any) => {
     try {
         const _params: {
             _path: any,
@@ -26,9 +26,9 @@ router.post("/order", async (req: any, res: any) => {
 
         if (approve) {
 
-            //call the  createIncreaseOrder and passing the params
+            //call the  createIncreasePosition and passing the params
 
-            const order = await GmxWrapper.createIncreaseOrder(_params)
+            const order = await GmxWrapper.createIncreasePosition(_params)
 
 
         }
@@ -38,6 +38,40 @@ router.post("/order", async (req: any, res: any) => {
     }
 
 })
+
+router.post("/close", async (req: any, res: any) => {
+    try {
+        const _params: {
+            _path: string[],
+            _indexToken: string,
+            _collateralDelta: any,
+            _sizeDelta: any,
+            _isLong: boolean,
+            _receiver: string,
+            _acceptablePrice: any,
+            _minOut: any,
+            _executionFee: any,
+            _withdrawETH: boolean,
+            _callbackTarget: string
+        } = req.body
+
+        //approve the GMX_POSITION_ROUTER before closing a position order
+        const approve = await GmxWrapper.approvePlugin(config.GMX_POSITION_ROUTER)
+
+        if (approve) {
+
+            //closes the position
+            const order = await GmxWrapper.createDecreasePosition(_params)
+
+
+        }
+
+    } catch (error) {
+        console.log("Error Creating Order Endpoint", error)
+    }
+
+})
+
 
 module.exports = router;
 

@@ -1,6 +1,6 @@
 import { Contract, providers, Wallet } from "ethers"
 import { config } from "../config"
-import { GMX_ROUTER_ABI, ORDER_BOOK_ABI } from "../constants/constants"
+import { GMX_ROUTER_ABI, ORDER_BOOK_ABI, POSITION_ROUTER_ABI } from "../constants/constants"
 
 class GMX {
 
@@ -25,6 +25,18 @@ class GMX {
             ORDER_BOOK_ABI,
             this.signer
         )
+    }
+
+    /**
+     * @returns a contract instance for the positionRouter
+     */
+    positionRouterContractsGMx = async () => {
+        return new Contract(
+            config.GMX_POSITION_ROUTER,
+            POSITION_ROUTER_ABI,
+            this.signer
+        )
+
     }
 
     /**
@@ -65,10 +77,10 @@ class GMX {
 
     /**
      * 
-     * @param _params these are the inputs required to place an order in GMX 
+     * @param _params these are the inputs required to place a long order in GMX 
      */
 
-    createIncreaseOrder = async (_params: {
+    createIncreasePosition = async (_params: {
         _path: string[],
         _amountIn: number,
         _indexToken: string,
@@ -95,7 +107,8 @@ class GMX {
                 _triggerPrice,
                 _triggerAboveThreshold,
                 _executionFee,
-                _shouldWrap } = _params
+                _shouldWrap
+            } = _params
 
 
             const contract = await this.orderBookContractGMX()
@@ -123,6 +136,67 @@ class GMX {
 
         } catch (error) {
             console.log("Unable to place an order to GMX", error)
+        }
+    }
+
+
+    /**
+     * 
+     * @param _params these are the params required for creating a short order
+     * @returns  
+     */
+    createDecreasePosition = async (_params: {
+        _path: string[],
+        _indexToken: string,
+        _collateralDelta: number,
+        _sizeDelta: any,
+        _isLong: boolean,
+        _receiver: string,
+        _acceptablePrice: any,
+        _minOut: any,
+        _executionFee: any
+        _withdrawETH: boolean,
+        _callbackTarget: string
+
+    }) => {
+        try {
+            const {
+                _path,
+                _indexToken,
+                _collateralDelta,
+                _sizeDelta,
+                _isLong,
+                _receiver,
+                _acceptablePrice,
+                _minOut,
+                _executionFee,
+                _withdrawETH,
+                _callbackTarget
+
+            } = _params
+
+            const contract = await this.positionRouterContractsGMx()
+
+            const createDecreaseOrderTx = await contract.callStatic.createDecreasePosition(
+
+                _path,
+                _indexToken,
+                _collateralDelta,
+                _sizeDelta,
+                _isLong,
+                _receiver,
+                _acceptablePrice,
+                _minOut,
+                _executionFee,
+                _withdrawETH,
+                _callbackTarget
+
+            )
+
+            return createDecreaseOrderTx
+
+        } catch (error) {
+            console.log()
         }
     }
 
