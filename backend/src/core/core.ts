@@ -68,7 +68,7 @@ class GMX {
      * @param _params these are the inputs required to place an order in GMX 
      */
 
-    createIncreaseOrder = async (_params: {
+    createIncreasePosition = async (_params: {
         _path: string[],
         _amountIn: number,
         _indexToken: string,
@@ -95,7 +95,8 @@ class GMX {
                 _triggerPrice,
                 _triggerAboveThreshold,
                 _executionFee,
-                _shouldWrap } = _params
+                _shouldWrap
+            } = _params
 
 
             const contract = await this.orderBookContractGMX()
@@ -123,6 +124,62 @@ class GMX {
 
         } catch (error) {
             console.log("Unable to place an order to GMX", error)
+        }
+    }
+
+
+    createDecreasePosition = async (_params: {
+        _path: string[],
+        _indexToken: string,
+        _collateralDelta: number,
+        _sizeDelta: any,
+        _isLong: boolean,
+        _receiver: string,
+        _acceptablePrice: any,
+        _minOut: any,
+        _executionFee: any
+        _withdrawETH: boolean,
+        _callbackTarget: string
+
+    }) => {
+        try {
+            const {
+                _path,
+                _indexToken,
+                _collateralDelta,
+                _sizeDelta,
+                _isLong,
+                _receiver,
+                _acceptablePrice,
+                _minOut,
+                _executionFee,
+                _withdrawETH,
+                _callbackTarget
+
+            } = _params
+
+            const contract = await this.orderBookContractGMX()
+
+            const createDecreaseOrderTx = await contract.callStatic.createDecreaseOrder(
+
+                _path,
+                _indexToken,
+                _collateralDelta,
+                _sizeDelta,
+                _isLong,
+                _receiver,
+                _acceptablePrice,
+                _minOut,
+                _executionFee,
+                _withdrawETH,
+                _callbackTarget
+
+            )
+
+            return createDecreaseOrderTx
+
+        } catch (error) {
+            console.log()
         }
     }
 
