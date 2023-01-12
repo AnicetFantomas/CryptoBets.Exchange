@@ -8,7 +8,9 @@ export const config = {
 
     JSON_RPC: process.env.JSON_RPC!,
 
-    ORDER_BOOK_ROUTER: process.env.ORDER_BOOK_ROUTER!
+    ORDER_BOOK_ROUTER: process.env.ORDER_BOOK_ROUTER!,
+
+    GMX_POSITION_ROUTER: process.env.GMX_POSITION_ROUTER!
 
 
 }

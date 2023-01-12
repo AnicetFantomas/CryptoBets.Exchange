@@ -65,7 +65,7 @@ class GMX {
 
     /**
      * 
-     * @param _params these are the inputs required to place an order in GMX 
+     * @param _params these are the inputs required to place a long order in GMX 
      */
 
     createIncreasePosition = async (_params: {
@@ -128,6 +128,11 @@ class GMX {
     }
 
 
+    /**
+     * 
+     * @param _params these are the params required for creating a short order
+     * @returns  
+     */
     createDecreasePosition = async (_params: {
         _path: string[],
         _indexToken: string,
