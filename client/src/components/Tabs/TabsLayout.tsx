@@ -58,7 +58,7 @@ export default function TabsLayout() {
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          <div className='overflow-scroll sm:overflow-auto'>
+          <div className='w-full overflow-scroll sm:overflow-auto'>
             <Positions />
           </div>
 
