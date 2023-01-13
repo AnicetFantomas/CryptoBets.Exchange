@@ -1,4 +1,4 @@
-import { utils } from "ethers"
+import { BigNumber, utils } from "ethers"
 import { ADDRESSES } from "../constants/addresses"
 import { GmxWrapper } from "../core"
 
@@ -17,7 +17,7 @@ class Test {
             const _minOut = 0     // The amount out min. Zero is used to imply 100 slippage, to prevent users swap txn from failing
             const _sizeDelta = 0
             const _isLong = true
-            const _triggerPrice = 16780 * 1e30
+            const _triggerPrice = utils.parseUnits("19108", 30)
             const _triggerAboveThreshold = false
             const _executionFee = 300000000000000
             const _shouldWrap = true

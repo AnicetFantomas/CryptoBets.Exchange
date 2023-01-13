@@ -76,7 +76,7 @@ class GMX {
         _sizeDelta: number,
         _collateralToken: string,
         _isLong: boolean,
-        _triggerPrice: number,
+        _triggerPrice: any,
         _triggerAboveThreshold: boolean,
         _executionFee: number,
         _shouldWrap: boolean
