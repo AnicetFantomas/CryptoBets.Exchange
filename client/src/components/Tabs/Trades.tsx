@@ -4,8 +4,8 @@ import React from 'react'
   return (
     <div className='flex justify-center'>
     <div className='flex flex-col w-full'>
-      
-      <table className='text-gray-200 '>
+    <div className='text-xl font-bold text-red-600'><td>No open trades yet !</td></div>
+      {/* <table className='text-gray-200 '>
         <tbody>
           <tr className='mb-6 font-bold text-center '>
             <td className=' whitespace-nowrap'>absol Pnl</td>
@@ -26,7 +26,7 @@ import React from 'react'
                 </tr>
 
         </tbody>
-      </table>
+      </table> */}
     </div>
   </div>
   )
