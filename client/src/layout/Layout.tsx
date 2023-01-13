@@ -3,6 +3,7 @@ import LevSlider from '../components/leverageSlider/levSlider'
 import Navbar from '../components/navbar/Navbar'
 import Charts from '../components/Charts'
 import Trading from '../components/trading/Trading'
+import TabsLayout from '../components/Tabs/TabsLayout'
 
 const Layout = () => {
   return (
@@ -12,6 +13,7 @@ const Layout = () => {
       <Charts/>
       <Trading/>
       <LevSlider/>
+      < TabsLayout />
     </div>
 	</div>
   )
