@@ -1,6 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react';
 
 const Trading = () => {
+
+    const [chooseLong, setChooseLong] = useState(false);
+
+    const handleChooseLong = (e: any) => {
+        setChooseLong(true);
+      }
+    
+      const handleChooseShort = (e: any) => {
+        setChooseLong(false);
+      }
+
     return (
         <div className='flex flex-col w-full p-2 pt-4 space-y-4'>
             <div className="flex justify-center w-full space-x-6">
@@ -10,13 +21,13 @@ const Trading = () => {
                 <div className='flex justify-center w-2/5 p-2 text-sm font-semibold text-white bg-red-300 rounded-lg'>PNL:80USD</div>
             </div>
             <div className="flex justify-center w-full space-x-6">
-                <button className='flex items-center justify-center w-1/2 p-3 text-sm font-extrabold text-white rounded-lg bg-sky-500'>
+                <button style={{backgroundColor: chooseLong? 'transparent' : '', }} onClick={handleChooseLong} className='long-btn flex items-center justify-center w-1/2 p-3 text-sm font-extrabold text-white rounded-lg bg-sky-500'>
                     <span>LONG</span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" />
                     </svg>
                 </button>
-                <button className='flex items-center justify-center w-1/2 p-3 text-sm font-extrabold text-white bg-red-500 rounded-lg'>
+                <button style={{backgroundColor: chooseLong? '' : 'transparent', }} onClick={handleChooseShort} className='short-btn flex items-center justify-center w-1/2 p-3 text-sm font-extrabold text-white bg-red-500 rounded-lg'>
                     <span>SHORT</span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" />
