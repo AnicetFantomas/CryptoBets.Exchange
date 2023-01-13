@@ -10,6 +10,14 @@
   color: white;
 }
 
+.long-btn {
+  border: solid 2px rgb(14 165 233);
+}
+
+.short-btn {
+  border: solid 2px rgb(239 68 68);
+}
+
 @media screen and (max-width: 768px) {
     #txt-title {
         font-size: 18px;

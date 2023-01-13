@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-export const LevDetails = () => {
+
+export const LevDetails = (props: any) => {
+
+
     return (
         <div className=' w-full flex flex-col'>
             <div >
@@ -10,11 +13,19 @@ export const LevDetails = () => {
                 </div>
                 <div className='flex w-full justify-between'>
                     <span className='text-white' >Leverage</span>
-                    <span className='text-sky-500'>13.00x</span>
+                    <span className='text-sky-500'>{props.sliderValue}x</span>
+                </div>
+                <div className='flex w-full justify-between'>
+                    <span className='text-white'>Entry Price</span>
+                    <span className='text-sky-500'>$16,048.21</span>
                 </div>
                 <div className='flex w-full justify-between'>
                     <span className='text-white'>Liq Price</span>
-                    <span className='text-sky-500'>$16,048.21</span>
+                    <span className='text-sky-500'>_</span>
+                </div>
+                <div className='flex w-full justify-between'>
+                    <span className='text-white'>Fees</span>
+                    <span className='text-sky-500'>_</span>
                 </div>
             </div>
             <button className=' bg-sky-500 my-5 text-white text-xl p-3 rounded-md'>Place Order</button>
