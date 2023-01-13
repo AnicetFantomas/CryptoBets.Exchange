@@ -27,7 +27,7 @@ const Orders = () => {
 
   return (
     <>
-      <AppModal show={show} close={() => setShow(false)} title='Do you want to cancel this order ?'><ConfirmCancel close={() => setShow(false)} handleRemove={() => handleRemove(id)} /></AppModal>
+      <AppModal show={show} close={() => setShow(false)} title='Do you want to close this position ?'><ConfirmCancel close={() => setShow(false)} handleRemove={() => handleRemove(id)} /></AppModal>
       <div className='flex justify-center'>
         <div className='flex flex-col w-full'>
 

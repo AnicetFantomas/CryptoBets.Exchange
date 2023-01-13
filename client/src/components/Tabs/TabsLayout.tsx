@@ -48,13 +48,13 @@ export default function TabsLayout() {
 
   return (
     <div className='mx-3'>
-      <h2 className='mb-2 text-2xl font-bold text-gray-200'>Trade History</h2>
+      <h2 className='mb-2 text-2xl font-bold text-gray-200'>Trades</h2>
       <div className='w-1/4 pb-1 mb-4 bg-slate-200 h-2px'></div>
       <Box sx={{ width: '100%'  }} >
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            <Tab sx={{ color: '#ffff'  }} label="Open Orders" {...a11yProps(0)} />
-            <Tab sx={{ color: '#ffff'  }} label="PNL History" {...a11yProps(1)} />
+            <Tab sx={{ color: '#ffff'  }} label="Positions" {...a11yProps(0)} />
+            <Tab sx={{ color: '#ffff'  }} label="Trades" {...a11yProps(1)} />
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
