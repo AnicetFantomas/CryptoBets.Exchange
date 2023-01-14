@@ -21,7 +21,7 @@ export const LevDetails = (props: any) => {
                 </div>
                 <div className='flex w-full justify-between'>
                     <span className='text-white'>Liq Price</span>
-                    <span className='text-sky-500'>_</span>
+                    <span className='text-sky-500'>_{props.result}</span>
                 </div>
                 <div className='flex w-full justify-between'>
                     <span className='text-white'>Fees</span>

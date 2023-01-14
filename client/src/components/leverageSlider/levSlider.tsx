@@ -3,13 +3,38 @@ import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import { LevDetails } from './LevDetails';
 
+interface Props {}
+
+interface State {
+    inputValue: number;
+    result: number;
+}
+
 export function valuetext(value: number) {
     return `${value}x`;
 }
 
-const LevSlider = () => {
+const LevSlider: React.FC<Props> = () => {
 
     const [sliderValue, setSliderValue] =useState<any | null>(null);
+
+    const [inputValue, setInputValue] = useState<number>(0);
+    const [result, setResult] = useState<number>(0);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInputValue(Number(e.target.value));
+        setResult((prev: number) => inputValue * sliderValue);
+    };
+
+
+    const handleSliderChange = (event: any, newValue: number | number[]) => {
+        if (Array.isArray(newValue)) {
+            newValue = newValue[0];
+        }
+        setSliderValue(newValue);
+        setResult(Number(inputValue) * newValue);
+    };
+
 
     return (
         <div className="m-5 flex flex-col ">
@@ -61,13 +86,15 @@ const LevSlider = () => {
                         min={0}
                         max={50}
                         value={sliderValue}
-                        onChange={(event, newValue) => setSliderValue(newValue)}
-                        onChangeCommitted={(event, newValue) => setSliderValue(newValue)}
+                        onChange={handleSliderChange}
+                        onChangeCommitted={handleSliderChange}
                     />
                 </Box>
             </div>
             <div>
-                <LevDetails sliderValue={sliderValue} setSliderValue={setSliderValue}  />
+                <LevDetails sliderValue={sliderValue} setSliderValue={setSliderValue} handleInputChange={handleInputChange} inputValue={inputValue} 
+                    setInputValue={setInputValue} 
+                    result={result}  />
             </div>
                 
             
