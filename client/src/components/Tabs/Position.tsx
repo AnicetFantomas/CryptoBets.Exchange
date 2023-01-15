@@ -13,7 +13,7 @@ const Orders = () => {
   const handleRemove = (id: any) => {
     const newOrders = myPositions.filter((position) => position.id !== id);
     setPositions(newOrders);
-    toast.info('Position closed!')
+    toast.info('Position closed')
   }
 
   const [show, setShow] = useState(false)
@@ -64,7 +64,6 @@ const Orders = () => {
                   </table>
 
                 )
-
 
             }
           </div>
