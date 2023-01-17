@@ -10,7 +10,7 @@ const Layout = () => {
 	  <div className="w-screen min-h-screen p-1 md:w-1/2 bg-sky-800">
       <Navbar/>
       <Charts/>
-      <Trading/>
+      {/* <Trading/> */}
       <LevSlider/>
     </div>
 	</div>
