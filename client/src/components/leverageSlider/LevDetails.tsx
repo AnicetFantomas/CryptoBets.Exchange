@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 import Axios from 'axios'
+import AppModal from '../GlobalModal/AppModal'
+import ConfirmBet from './ConfirmPosition'
 import { utils } from 'ethers'
-import { Box, Container } from '@mui/material'
+import { Box } from '@mui/material'
 
 export const LevDetails = (props: any) => {
+  const [tokens, setTokens] = useState<any>([]);
+  const [show, setShow] = useState(false);
   //state to handle data submited
   const [data, setData] = useState({
     _path: [''],
@@ -19,6 +23,11 @@ export const LevDetails = (props: any) => {
     _shouldWrap: true,
   })
 
+  const handleBet = async () => {
+    setShow(true)
+
+ }  
+
   //url to handle enpoints from the backend
   const url = 'http://localhost:3002/api/long'
 
@@ -30,10 +39,22 @@ export const LevDetails = (props: any) => {
     setData(newData)
     console.log(newData)
   }
+  
+  const getMarkets = async () => {
+    try {
+        const response = fetch("https://api.gmx.io/tokens");
+        const data = await (await response).json();
+
+        setTokens(data);
+    } catch (error) {
+        console.error(onmessage)
+    }
+  }
+
+  getMarkets()
 
   //function to submit form data when button is clicked
   function handleSubmit(e: any) {
-    e.preventDefault()
 
     setData({
       _path: [
@@ -52,7 +73,7 @@ export const LevDetails = (props: any) => {
       _shouldWrap: true,
     })
 
-    console.log(data)
+    console.log(setData)
 
     Axios.post(url, {
       _path: data._path,
@@ -73,38 +94,38 @@ export const LevDetails = (props: any) => {
 
   return (
     <Box>
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <div className=" w-full flex flex-col">
+      <AppModal show={show} close={()=>setShow(false)} title='Create position'><ConfirmBet  close={()=>setShow(false)} /></AppModal>
+        <div className="flex flex-col w-full ">
           <div>
-            <div className="flex w-full justify-between">
+            <div className="flex justify-between w-full">
               <span className="text-white">Available liquidity</span>
               <span className="text-sky-500">3,873.56</span>
             </div>
-            <div className="flex w-full justify-between">
+            <div className="flex justify-between w-full">
               <span className="text-white">Leverage</span>
               <span className="text-sky-500">{props.sliderValue}x</span>
             </div>
-            <div className="flex w-full justify-between">
+            <div className="flex justify-between w-full">
               <span className="text-white">Entry Price</span>
               <span className="text-sky-500">$16,048.21</span>
             </div>
-            <div className="flex w-full justify-between">
+            <div className="flex justify-between w-full">
               <span className="text-white">Liq Price</span>
               <span className="text-sky-500">${props.result}</span>
             </div>
-            <div className="flex w-full justify-between">
+            <div className="flex justify-between w-full">
               <span className="text-white">Fees</span>
               <span className="text-sky-500">_</span>
             </div>
           </div>
           <button
-            className=" bg-sky-500 my-5 text-white text-xl p-3 rounded-md"
+            onClick={handleBet}
+            className="p-3 my-5 text-xl text-white rounded-md bg-sky-500"
             type="submit"
           >
             Place Order
           </button>
         </div>
-      </form>
     </Box>
   )
 }
