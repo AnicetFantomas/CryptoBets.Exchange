@@ -46,7 +46,7 @@ class GMX {
 
     approveContractGMX = async () => {
         return new Contract(
-            config.GMX_ROUTER_SPENDER,
+            config.GMX_ROUTER,
             GMX_ROUTER_ABI,
             this.signer
         )
@@ -192,6 +192,8 @@ class GMX {
                 _callbackTarget
 
             )
+
+            console.log("createDecreaseOrderTx", createDecreaseOrderTx)
 
             return createDecreaseOrderTx
 
