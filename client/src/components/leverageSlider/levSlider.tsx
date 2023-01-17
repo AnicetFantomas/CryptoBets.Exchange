@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Box from '@mui/material/Box';
-import Slider from '@mui/material/Slider';
 import { LevDetails } from './LevDetails';
+import SliderBox from './SliderBox';
+import Trading from '../trading/Trading';
 
 interface Props {}
 
@@ -10,34 +10,32 @@ interface State {
     result: number;
 }
 
-export function valuetext(value: number) {
-    return `${value}x`;
-}
 
-const LevSlider: React.FC<Props> = () => {
+const LevSlider: React.FC<Props> = (props: any) => {
 
-    const [sliderValue, setSliderValue] =useState<any | null>(null);
+    const [sliderValue, setSliderValue] =useState(0);
 
-    const [inputValue, setInputValue] = useState<number>(0);
-    const [result, setResult] = useState<number>(0);
+    const [inputValue, setInputValue] = useState(0);
+    const [result, setResult] = useState(0);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(Number(e.target.value));
-        setResult((prev: number) => inputValue * sliderValue);
+    const handleInputChange = (times: number) => {
+        setInputValue((prev: number) => inputValue * times);
+      
     };
 
+    console.log(inputValue);
 
-    const handleSliderChange = (event: any, newValue: number | number[]) => {
-        if (Array.isArray(newValue)) {
-            newValue = newValue[0];
-        }
+    const handleSliderChange = (e: any, newValue: number) => {
+        setInputValue(e.target.value);
         setSliderValue(newValue);
-        setResult(Number(inputValue) * newValue);
+        setResult((prev: number) => inputValue * newValue);
     };
 
 
     return (
-        <div className="m-5 flex flex-col ">
+        <>
+            <Trading handleSliderChange={handleSliderChange} inputValue={inputValue} handleInputChange={handleInputChange} />
+            <div className="m-5 flex flex-col ">
             <h2 className='self-start text-white my-5'>Leverage</h2>
             <div className='ml-3 flex self-center'>
                 <div className='mr-5 flex flex-col items-center hover:text-blue-200 cursor-pointer'>
@@ -74,31 +72,17 @@ const LevSlider: React.FC<Props> = () => {
                     <span className='text-white'>50</span>
                 </div>
             </div>
-            <div className='flex self-center'>
-                <Box sx={{ width: 350 }}>
-                    <Slider
-                        aria-label="Temperature"
-                        defaultValue={0}
-                        getAriaValueText={valuetext}
-                        valueLabelDisplay="auto"
-                        step={5}
-                        marks
-                        min={0}
-                        max={50}
-                        value={sliderValue}
-                        onChange={handleSliderChange}
-                        onChangeCommitted={handleSliderChange}
-                    />
-                </Box>
-            </div>
+
+            <SliderBox handleSliderChange={handleSliderChange} inputValue={inputValue} handleInputChange={handleInputChange} />
+            
             <div>
-                <LevDetails sliderValue={sliderValue} setSliderValue={setSliderValue} handleInputChange={handleInputChange} inputValue={inputValue} 
-                    setInputValue={setInputValue} 
-                    result={result}  />
+                <LevDetails sliderValue={sliderValue} setSliderValue={setSliderValue}
+                         handleSliderChange={handleSliderChange} result={result} handleInputChange={handleInputChange} />
             </div>
                 
             
         </div>
+        </>
     );
 }
 
