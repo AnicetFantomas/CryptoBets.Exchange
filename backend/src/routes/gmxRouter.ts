@@ -22,13 +22,15 @@ router.post("/long", async (req: any, res: any) => {
 
         //call the approve function before creating an order to approve the GMX ROUTER
 
-        const approve = await GmxWrapper.approvePlugin(config.GMX_ROUTER_SPENDER)
+        const approve = await GmxWrapper.approvePlugin(config.GMX_ROUTER)
 
         if (approve) {
 
             //call the  createIncreasePosition and passing the params
 
             const order = await GmxWrapper.createIncreasePosition(_params)
+
+            res.send(order)
 
 
         }
@@ -58,10 +60,17 @@ router.post("/close", async (req: any, res: any) => {
         //approve the GMX_POSITION_ROUTER before closing a position order
         const approve = await GmxWrapper.approvePlugin(config.GMX_POSITION_ROUTER)
 
+        console.log("APPROVED", approve)
+
         if (approve) {
 
             //closes the position
-            const order = await GmxWrapper.createDecreasePosition(_params)
+            const closeOrder = await GmxWrapper.createDecreasePosition(_params)
+
+
+            console.log("We reached here", closeOrder)
+
+            res.send(closeOrder)
 
 
         }
