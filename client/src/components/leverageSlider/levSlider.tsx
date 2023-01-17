@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LevDetails } from './LevDetails';
 import SliderBox from './SliderBox';
 import Trading from '../trading/Trading';
@@ -18,19 +18,30 @@ const LevSlider: React.FC<Props> = (props: any) => {
     const [inputValue, setInputValue] = useState(0);
     const [result, setResult] = useState(0);
 
-    const handleInputChange = (times: number) => {
-        setInputValue((prev: number) => inputValue * times);
+    const handleInputChange = (e: any) => {
+        const {target} = e
+        const {value} = target;
+        setInputValue((prev: number) => Number(value));
+        setInputValue(e.target.value);
       
     };
 
-    console.log(inputValue);
 
     const handleSliderChange = (e: any, newValue: number) => {
-        setInputValue(e.target.value);
-        setSliderValue(newValue);
-        setResult((prev: number) => inputValue * newValue);
+        setSliderValue(newValue);   
     };
 
+    useEffect(() => {
+      if (sliderValue === 0) {
+        return setResult(inputValue)
+      }
+      setResult(inputValue * sliderValue)
+      
+    }, [inputValue, sliderValue])
+    
+   
+
+    
 
     return (
         <>
@@ -76,8 +87,7 @@ const LevSlider: React.FC<Props> = (props: any) => {
             <SliderBox handleSliderChange={handleSliderChange} inputValue={inputValue} handleInputChange={handleInputChange} />
             
             <div>
-                <LevDetails sliderValue={sliderValue} setSliderValue={setSliderValue}
-                         handleSliderChange={handleSliderChange} result={result} handleInputChange={handleInputChange} />
+                <LevDetails sliderValue={sliderValue} result={result} />
             </div>
                 
             

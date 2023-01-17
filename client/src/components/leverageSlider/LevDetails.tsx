@@ -17,11 +17,11 @@ export const LevDetails = (props: any) => {
                 </div>
                 <div className='flex w-full justify-between'>
                     <span className='text-white'>Entry Price</span>
-                    <span className='text-sky-500'>$16,048.21</span>
+                    <span className='text-sky-500'>$ 16,048.21</span>
                 </div>
                 <div className='flex w-full justify-between'>
                     <span className='text-white'>Liq Price</span>
-                    <span className='text-sky-500'>_{props.result}</span>
+                    <span className='text-sky-500'>$ {props.result}</span>
                 </div>
                 <div className='flex w-full justify-between'>
                     <span className='text-white'>Fees</span>
