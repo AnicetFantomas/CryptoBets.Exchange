@@ -20,10 +20,6 @@ const Navbar = () => {
                 </svg>
                 <p id="txt-title" className="text-white tracking-tighter mt-5 font-medium text-2xl">CryptoBets.Exchange</p>
             </div>
-           <div className="flex flex-col text-white btn mt-3 mr-6">
-                <span className='text-sm ml-2'>Trade PNL</span>
-                <span className='font-bold text-sky-500 text-xl'>+78USD</span>
-           </div>
         </div>
     );
 }
