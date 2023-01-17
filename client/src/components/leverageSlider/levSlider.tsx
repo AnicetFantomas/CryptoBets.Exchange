@@ -1,18 +1,41 @@
 import React, { useState } from 'react';
-import Box from '@mui/material/Box';
-import Slider from '@mui/material/Slider';
 import { LevDetails } from './LevDetails';
+import SliderBox from './SliderBox';
+import Trading from '../trading/Trading';
 
-export function valuetext(value: number) {
-    return `${value}x`;
+interface Props {}
+
+interface State {
+    inputValue: number;
+    result: number;
 }
 
-const LevSlider = () => {
 
-    const [sliderValue, setSliderValue] =useState<any | null>(null);
+const LevSlider: React.FC<Props> = (props: any) => {
+
+    const [sliderValue, setSliderValue] =useState(0);
+
+    const [inputValue, setInputValue] = useState(0);
+    const [result, setResult] = useState(0);
+
+    const handleInputChange = (times: number) => {
+        setInputValue((prev: number) => inputValue * times);
+      
+    };
+
+    console.log(inputValue);
+
+    const handleSliderChange = (e: any, newValue: number) => {
+        setInputValue(e.target.value);
+        setSliderValue(newValue);
+        setResult((prev: number) => inputValue * newValue);
+    };
+
 
     return (
-        <div className="m-5 flex flex-col ">
+        <>
+            <Trading handleSliderChange={handleSliderChange} inputValue={inputValue} handleInputChange={handleInputChange} />
+            <div className="m-5 flex flex-col ">
             <h2 className='self-start text-white my-5'>Leverage</h2>
             <div className='ml-3 flex self-center'>
                 <div className='mr-5 flex flex-col items-center hover:text-blue-200 cursor-pointer'>
@@ -49,29 +72,17 @@ const LevSlider = () => {
                     <span className='text-white'>50</span>
                 </div>
             </div>
-            <div className='flex self-center'>
-                <Box sx={{ width: 350 }}>
-                    <Slider
-                        aria-label="Temperature"
-                        defaultValue={0}
-                        getAriaValueText={valuetext}
-                        valueLabelDisplay="auto"
-                        step={5}
-                        marks
-                        min={0}
-                        max={50}
-                        value={sliderValue}
-                        onChange={(event, newValue) => setSliderValue(newValue)}
-                        onChangeCommitted={(event, newValue) => setSliderValue(newValue)}
-                    />
-                </Box>
-            </div>
+
+            <SliderBox handleSliderChange={handleSliderChange} inputValue={inputValue} handleInputChange={handleInputChange} />
+            
             <div>
-                <LevDetails sliderValue={sliderValue} setSliderValue={setSliderValue}  />
+                <LevDetails sliderValue={sliderValue} setSliderValue={setSliderValue}
+                         handleSliderChange={handleSliderChange} result={result} handleInputChange={handleInputChange} />
             </div>
                 
             
         </div>
+        </>
     );
 }
 
