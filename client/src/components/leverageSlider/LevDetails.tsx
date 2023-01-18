@@ -65,7 +65,7 @@ export const LevDetails = (props: any) => {
       _shouldWrap: true,
     })
 
-    console.log(data._amountIn)
+    console.log(data)
 
     Axios.post(url, {
       _path: data._path,
