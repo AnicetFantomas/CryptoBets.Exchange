@@ -31,27 +31,15 @@ export const LevDetails = (props: any) => {
   //url to handle enpoints from the backend
   const url = 'http://localhost:3002/api/long'
 
-  //function to set the form data
-  function handle(e: any) {
-    console.log(data)
-    const newData: any = { ...data }
-    newData[e.target.id] = e.target.value
-    setData(newData)
-    console.log(newData)
-  }
-
-  const [paths, setPaths] = useState({
-    
-  })
+  // const [paths, setPaths] = useState(addressesObj)
   
 
   //function to submit form data when button is clicked
   function handleSubmit(e: any) {
-
     setData({
       _path: [
         '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
-        '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+        `${0x82aF49447D8a07e3bd95BD0d56f35241523fBab1}`
       ],
       _amountIn: `${props.result}`,
       _indexToken: '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f',
@@ -82,6 +70,8 @@ export const LevDetails = (props: any) => {
     }).then(async (res) => {
       console.log(res.data)
     })
+
+    setShow(false)
   }
 
   return (

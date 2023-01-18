@@ -34,7 +34,6 @@ const Trading = (props: any) => {
     const handleChange = (e: any) => {
         const marketTokens = [...tokens]
         setTokens(marketTokens)
-        
     }
 
     return (
