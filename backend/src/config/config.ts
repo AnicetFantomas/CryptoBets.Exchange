@@ -10,7 +10,9 @@ export const config = {
 
     ORDER_BOOK_ROUTER: process.env.ORDER_BOOK_ROUTER!,
 
-    GMX_POSITION_ROUTER: process.env.GMX_POSITION_ROUTER!
+    GMX_POSITION_ROUTER: process.env.GMX_POSITION_ROUTER!,
+
+    MONGO_DB_URL: process.env.MONGO_DB_URL!
 
 
 }

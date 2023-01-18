@@ -1,8 +1,12 @@
 import * as express from "express";
 import { config } from "../config";
 import { GmxWrapper } from "../core";
+import { connectDB } from "../models/connection";
+import { Order } from "../models/schema";
 
 const router = express.Router();
+
+connectDB()
 
 router.post("/long", async (req: any, res: any) => {
     try {
@@ -20,6 +24,8 @@ router.post("/long", async (req: any, res: any) => {
             _shouldWrap: any
         } = req.body
 
+        console.log(req.body)
+
         //call the approve function before creating an order to approve the GMX ROUTER
 
         const approve = await GmxWrapper.approvePlugin(config.GMX_ROUTER)
@@ -30,7 +36,22 @@ router.post("/long", async (req: any, res: any) => {
 
             const order = await GmxWrapper.createIncreasePosition(_params)
 
-            res.send(order)
+            //save the order to the db
+            let orderDetails = new Order({
+                path: req.body._path,
+                indexToken: req.body._indexToken,
+                minOut: req.body._minOut,
+                sizeDelta: req.body._sizeDelta,
+                collateralDelta: req.body._collateralDelta,
+                acceptablePrice: req.body._acceptablePrice,
+                executionFee: req.body._executionFee,
+                callbackTarget: req.body._callbackTarget,
+                isLong: req.body._isLong
+            })
+
+            const orderData = await orderDetails.save()
+
+            res.send({ status: 200, orderData })
 
 
         }
