@@ -13,36 +13,36 @@ interface State {
 
 const LevSlider  = (props: any) => {
 
-    // const [sliderValue, setSliderValue] =useState(0);
+    const [sliderValue, setSliderValue] =useState(0);
 
-    // const [inputValue, setInputValue] = useState(0);
-    // const [result, setResult] = useState(0);
+    const [inputValue, setInputValue] = useState(0);
+    const [result, setResult] = useState(0);
 
-    // const handleInputChange = (e: any) => {
-    //     const {target} = e
-    //     const {value} = target;
-    //     setInputValue((prev: number) => Number(value));
-    //     setInputValue(e.target.value);
+    const handleInputChange = (e: any) => {
+        const {target} = e
+        const {value} = target;
+        setInputValue((prev: number) => Number(value));
+        setInputValue(e.target.value);
       
-    // };
+    };
 
 
-    // const handleSliderChange = (e: any, newValue: number) => {
-    //     setSliderValue(newValue);   
-    // };
+    const handleSliderChange = (e: any, newValue: number) => {
+        setSliderValue(newValue);   
+    };
 
-    // useEffect(() => {
-    //   if (sliderValue === 0) {
-    //     return setResult(inputValue)
-    //   }
-    //   setResult(inputValue * sliderValue)
+    useEffect(() => {
+      if (sliderValue === 0) {
+        return setResult(inputValue)
+      }
+      setResult(inputValue * sliderValue)
       
-    // }, [inputValue, sliderValue])
+    }, [inputValue, sliderValue])
     
 
     return (
         <>
-            {/* <Trading handleSliderChange={handleSliderChange} inputValue={inputValue} handleInputChange={handleInputChange} /> */}
+            <Trading handleSliderChange={handleSliderChange} inputValue={inputValue} handleInputChange={handleInputChange} />
             <div className="flex flex-col m-5 ">
             <h2 className='self-start my-5 text-white'>Leverage</h2>
             <div className='flex self-center ml-3'>
@@ -81,10 +81,10 @@ const LevSlider  = (props: any) => {
                 </div>
             </div>
 
-            <SliderBox handleSliderChange={props.handleSliderChange} inputValue={props.inputValue} handleInputChange={props.handleInputChange} />
+            <SliderBox handleSliderChange={handleSliderChange} inputValue={inputValue} handleInputChange={handleInputChange} />
             
             <div>
-            <LevDetails sliderValue={props.sliderValue} result={props.result} />
+            <LevDetails handleBet={props.handleBet} sliderValue={sliderValue} result={result} />
             </div>
                 
             

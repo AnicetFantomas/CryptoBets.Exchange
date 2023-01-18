@@ -8,7 +8,7 @@ import { Box } from '@mui/material'
 export const LevDetails = (props: any) => {
   const [tokens, setTokens] = useState<any>([]);
   const [show, setShow] = useState(false);
-  //state to handle data submited
+  // state to handle data submited
   const [data, setData] = useState({
     _path: [''],
     _amountIn: '',
@@ -39,19 +39,11 @@ export const LevDetails = (props: any) => {
     setData(newData)
     console.log(newData)
   }
+
+  const [paths, setPaths] = useState({
+    
+  })
   
-  const getMarkets = async () => {
-    try {
-        const response = fetch("https://api.gmx.io/tokens");
-        const data = await (await response).json();
-
-        setTokens(data);
-    } catch (error) {
-        console.error(onmessage)
-    }
-  }
-
-  getMarkets()
 
   //function to submit form data when button is clicked
   function handleSubmit(e: any) {
@@ -61,7 +53,7 @@ export const LevDetails = (props: any) => {
         '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
         '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
       ],
-      _amountIn: '8300000000000000',
+      _amountIn: `${props.result}`,
       _indexToken: '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f',
       _minOut: 0,
       _sizeDelta: '95168869350000000000000000000000',
@@ -73,7 +65,7 @@ export const LevDetails = (props: any) => {
       _shouldWrap: true,
     })
 
-    console.log(setData)
+    console.log(data._amountIn)
 
     Axios.post(url, {
       _path: data._path,
@@ -94,7 +86,7 @@ export const LevDetails = (props: any) => {
 
   return (
     <Box>
-      <AppModal show={show} close={()=>setShow(false)} title='Create position'><ConfirmBet  close={()=>setShow(false)} /></AppModal>
+      <AppModal show={show} close={()=>setShow(false)} title='Create position'><ConfirmBet result={props.result} handleSubmit={handleSubmit} close={()=>setShow(false)} /></AppModal>
         <div className="flex flex-col w-full ">
           <div>
             <div className="flex justify-between w-full">

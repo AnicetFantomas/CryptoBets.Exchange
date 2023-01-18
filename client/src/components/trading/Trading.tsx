@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { LevDetails } from '../leverageSlider/LevDetails';
 
 const Trading = (props: any) => {
 
