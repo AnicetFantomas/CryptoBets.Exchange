@@ -46,14 +46,14 @@ export const LevDetails = (props: any) => {
       _minOut: 0,
       _sizeDelta: '95168869350000000000000000000000',
       _collateralToken: '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f',
-      _isLong: true,
+      _isLong: props.chooseLong ? true : false,
       _triggerPrice: '16791000000000000000000000000000000',
       _triggerAboveThreshold: true,
       _executionFee: '100000000000000',
       _shouldWrap: true,
     })
 
-    console.log(data)
+    console.log(data._isLong)
 
     Axios.post(url, {
       _path: data._path,
