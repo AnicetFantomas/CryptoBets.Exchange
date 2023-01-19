@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import Tokens from './data';
 
 const Trading = (props: any) => {
 
-    const [chooseLong, setChooseLong] = useState(true);
-    const [tokens, setTokens] = useState<any>([]);
-
+    const [chooseLong, setChooseLong] = useState(false);
 
     const handleChooseLong = () => {
         setChooseLong(true);
@@ -15,37 +14,15 @@ const Trading = (props: any) => {
         setChooseLong(!chooseLong);
     }
 
-    const getMarkets = async () => {
-        try {
-            const response = fetch("https://api.gmx.io/tokens");
-            const data = await (await response).json();
-
-            setTokens(data);
-        } catch (error) {
-            console.error(onmessage)
-        }
-    }
-
-    useEffect(() => {
-        getMarkets();
-    }, []);
-
-    console.log(tokens);
-
-    const handleChange = (e: any) => {
-        const marketTokens = [...tokens]
-        setTokens(marketTokens)
-    }
-
     return (
         <div className='flex flex-col w-full p-2 pt-4 space-y-4'>
-            <div className="flex justify-center w-full mb-4 space-x-6">
-                <select onChange={handleChange} className='block w-2/5 px-4 text-xs leading-tight text-white cursor-pointer bg-cyan-600 focus:outline-none '>
-                    {
-                        tokens.map((data: any) => (<option key={data.data.address} defaultValue={data.data.symbol}>
-                            {'ETH / '}{`${data.data.symbol} `}
-                        </option>))
-                    }
+            <div className="flex mb-4 justify-center w-full space-x-6">
+                <select className='block w-2/5 px-4 text-xs leading-tight text-white cursor-pointer bg-cyan-600 focus:outline-none '>
+                  
+                {Tokens.map((token: any) => (<option key={token.address} value={token.address}>
+                        {`USDC`} / {token.symbol}
+                            </option>
+                        ))}
 
                 </select>
                 <div className='flex justify-center w-2/5 p-2 text-sm font-semibold text-white bg-red-500'>PNL:80USD</div>
