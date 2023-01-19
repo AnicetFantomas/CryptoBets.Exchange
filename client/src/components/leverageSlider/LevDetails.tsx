@@ -1,9 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Axios from 'axios'
-import { utils } from 'ethers'
+import { BigNumber, utils } from 'ethers'
 import { Box, Container } from '@mui/material'
+import { json } from 'stream/consumers'
 
 export const LevDetails = (props: any) => {
+  //states
+  const [prices, setPrice] = useState([''])
+
+  console.log('PRICES', prices)
+
+  useEffect(() => {
+    fetch('https://api.gmx.io/prices')
+      .then((response) => response.json())
+      .then((json) => setPrice(json))
+  }, [''])
+
   //state to handle data submited
   const [data, setData] = useState({
     _path: [''],
@@ -16,7 +28,6 @@ export const LevDetails = (props: any) => {
     _triggerPrice: '',
     _triggerAboveThreshold: true,
     _executionFee: '',
-    _shouldWrap: true,
   })
 
   //url to handle enpoints from the backend
@@ -30,6 +41,10 @@ export const LevDetails = (props: any) => {
     setData(newData)
     console.log(newData)
   }
+  const key: any = '0xf97f4df75117a78c1A5a0DBb814Af92458539FB4'
+  const value = prices[key]
+  // \\console.log('results price', utils.formatEther(value))
+  console.log(`Value for key "${key}": ${value}`)
 
   //function to submit form data when button is clicked
   function handleSubmit(e: any) {
@@ -46,10 +61,9 @@ export const LevDetails = (props: any) => {
       _sizeDelta: '95168869350000000000000000000000',
       _collateralToken: '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f',
       _isLong: true,
-      _triggerPrice: '16791000000000000000000000000000000',
+      _triggerPrice: value,
       _triggerAboveThreshold: true,
       _executionFee: '100000000000000',
-      _shouldWrap: true,
     })
 
     console.log(data)
@@ -65,7 +79,6 @@ export const LevDetails = (props: any) => {
       _triggerPrice: data._triggerPrice,
       _triggerAboveThreshold: data._triggerAboveThreshold,
       _executionFee: data._executionFee,
-      _shouldWrap: data._shouldWrap,
     }).then(async (res) => {
       console.log(res.data)
     })
@@ -90,7 +103,7 @@ export const LevDetails = (props: any) => {
             </div>
             <div className="flex w-full justify-between">
               <span className="text-white">Liq Price</span>
-              <span className="text-sky-500">${props.result}</span>
+              <span className="text-sky-500">_</span>
             </div>
             <div className="flex w-full justify-between">
               <span className="text-white">Fees</span>
