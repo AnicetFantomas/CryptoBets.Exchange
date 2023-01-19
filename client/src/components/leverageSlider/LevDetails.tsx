@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Axios from 'axios'
+import AppModal from '../GlobalModal/AppModal'
+import ConfirmBet from './ConfirmPosition'
 import { utils } from 'ethers'
-import { Box, Container } from '@mui/material'
+import { Box } from '@mui/material'
 
 export const LevDetails = (props: any) => {
-  //state to handle data submited
+  const [tokens, setTokens] = useState<any>([]);
+  const [show, setShow] = useState(false);
+  // state to handle data submited
   const [data, setData] = useState({
     _path: [''],
     _amountIn: '',
@@ -19,33 +23,43 @@ export const LevDetails = (props: any) => {
     _shouldWrap: true,
   })
 
+  const handleBet = async () => {
+    setShow(true)
+
+ }  
+
   //url to handle enpoints from the backend
   const url = 'http://localhost:3002/api/long'
 
-  //function to set the form data
-  function handle(e: any) {
-    console.log(data)
-    const newData: any = { ...data }
-    newData[e.target.id] = e.target.value
-    setData(newData)
-    console.log(newData)
-  }
+  // const [paths, setPaths] = useState(addressesObj)
+  const getMarkets = async () => {
+    try {
+        const response = fetch("https://api.gmx.io/prices");
+        const data = await (await response).json();
+
+        setTokens(data);
+        // console.log(data);
+        
+    } catch (error) {
+        console.error(onmessage)
+    }
+}
+
 
   //function to submit form data when button is clicked
   function handleSubmit(e: any) {
-    e.preventDefault()
-
+    // getMarkets(); 
     setData({
       _path: [
         '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
-        '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+        `${0x82aF49447D8a07e3bd95BD0d56f35241523fBab1}`
       ],
-      _amountIn: '8300000000000000',
+      _amountIn: `${props.result}`,
       _indexToken: '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f',
       _minOut: 0,
       _sizeDelta: '95168869350000000000000000000000',
       _collateralToken: '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f',
-      _isLong: true,
+      _isLong: props.chooseLong ? true : false,
       _triggerPrice: '16791000000000000000000000000000000',
       _triggerAboveThreshold: true,
       _executionFee: '100000000000000',
@@ -69,42 +83,44 @@ export const LevDetails = (props: any) => {
     }).then(async (res) => {
       console.log(res.data)
     })
+
+    setShow(false)
   }
 
   return (
     <Box>
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <div className=" w-full flex flex-col">
+      <AppModal show={show} close={()=>setShow(false)} title='Create position'><ConfirmBet result={props.result} handleSubmit={handleSubmit} close={()=>setShow(false)} /></AppModal>
+        <div className="flex flex-col w-full ">
           <div>
-            <div className="flex w-full justify-between">
+            <div className="flex justify-between w-full">
               <span className="text-white">Available liquidity</span>
               <span className="text-sky-500">3,873.56</span>
             </div>
-            <div className="flex w-full justify-between">
+            <div className="flex justify-between w-full">
               <span className="text-white">Leverage</span>
               <span className="text-sky-500">{props.sliderValue}x</span>
             </div>
-            <div className="flex w-full justify-between">
+            <div className="flex justify-between w-full">
               <span className="text-white">Entry Price</span>
               <span className="text-sky-500">$16,048.21</span>
             </div>
-            <div className="flex w-full justify-between">
+            <div className="flex justify-between w-full">
               <span className="text-white">Liq Price</span>
               <span className="text-sky-500">${props.result}</span>
             </div>
-            <div className="flex w-full justify-between">
+            <div className="flex justify-between w-full">
               <span className="text-white">Fees</span>
               <span className="text-sky-500">_</span>
             </div>
           </div>
           <button
-            className=" bg-sky-500 my-5 text-white text-xl p-3 rounded-md"
+            onClick={handleBet}
+            className="p-3 my-5 text-xl text-white rounded-md bg-sky-500"
             type="submit"
           >
             Place Order
           </button>
         </div>
-      </form>
     </Box>
   )
 }
