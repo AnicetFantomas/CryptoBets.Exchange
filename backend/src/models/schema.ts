@@ -12,6 +12,7 @@ const OrderSchema = new Schema<IOrder>(
         executionFee: { type: Number },
         callbackTarget: { type: String },
         isLong: { type: Boolean },
+        referralCode: { type: String }
     },
     {
         timestamps: true,

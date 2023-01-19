@@ -11,24 +11,25 @@ connectDB()
 router.post("/long", async (req: any, res: any) => {
     try {
         const _params: {
-            _path: any,
+            _path: string[],
+            _indexToken: string,
             _amountIn: any,
-            _indexToken: any,
             _minOut: any,
             _sizeDelta: any,
-            _collateralToken: any,
-            _isLong: any,
-            _triggerPrice: any,
-            _triggerAboveThreshold: any,
+            _isLong: boolean,
+            _acceptablePrice: any,
             _executionFee: any,
-            _shouldWrap: any
+            _callbackTarget: string,
+            _referralCode: string
         } = req.body
 
         console.log(req.body)
 
         //call the approve function before creating an order to approve the GMX ROUTER
 
-        const approve = await GmxWrapper.approvePlugin(config.GMX_ROUTER)
+        const approve = await GmxWrapper.approve(config.USDC)
+
+        console.log("we are here")
 
         if (approve) {
 
@@ -42,16 +43,16 @@ router.post("/long", async (req: any, res: any) => {
                 indexToken: req.body._indexToken,
                 minOut: req.body._minOut,
                 sizeDelta: req.body._sizeDelta,
-                collateralDelta: req.body._collateralDelta,
                 acceptablePrice: req.body._acceptablePrice,
                 executionFee: req.body._executionFee,
                 callbackTarget: req.body._callbackTarget,
-                isLong: req.body._isLong
+                isLong: req.body._isLong,
+                referralCode: req.body._referralCode
             })
 
-            const orderData = await orderDetails.save()
+            //const orderData = await orderDetails.save()
 
-            res.send({ status: 200, orderData })
+            //res.send({ status: 200, orderData })
 
 
         }

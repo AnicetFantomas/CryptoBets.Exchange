@@ -8,5 +8,6 @@ export interface IOrder {
     executionFee: any,
     callbackTarget: any,
     isLong: boolean,
+    referralCode: string
 
 }

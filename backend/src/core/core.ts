@@ -13,6 +13,18 @@ class GMX {
 
     }
 
+    /**
+     * 
+     * @param tokenAddress 
+     * @returns 
+     */
+    approveContract = async (tokenAddress: string) => {
+        return new Contract(
+            tokenAddress,
+            ["function approve(address _spender, uint256 _value) public returns (bool success)"],
+            this.signer);
+    }
+
 
     /**
      * 
@@ -75,6 +87,36 @@ class GMX {
 
     }
 
+
+    /**
+     * 
+     * @param tokenAddress 
+     */
+
+    approve = async (tokenAddress: string) => {
+        try {
+            const contract = await this.approveContract(tokenAddress)
+
+            console.log("token usdc", tokenAddress)
+
+            const MAX_INT = "115792089237316195423570985008687907853269984665640564039457584007913129639935";
+
+            const overLoads = {
+                gasPrice: 20 * 1e9,
+                gasLimit: 1000000
+            }
+
+            const approveTx = await contract.callStatic.approve(config.GMX_ROUTER, MAX_INT, overLoads)
+
+            console.log("******APPROVE TRANSACTION********", approveTx.hash)
+            return { success: true, data: `${approveTx.hash}` };
+
+
+        } catch (error) {
+            console.log("Unable to approve contract", error)
+        }
+    }
+
     /**
      * 
      * @param _params these are the inputs required to place a long order in GMX 
@@ -82,49 +124,47 @@ class GMX {
 
     createIncreasePosition = async (_params: {
         _path: string[],
-        _amountIn: number,
         _indexToken: string,
-        _minOut: number,
-        _sizeDelta: number,
-        _collateralToken: any,
+        _amountIn: any,
+        _minOut: any,
+        _sizeDelta: any,
         _isLong: boolean,
-        _triggerPrice: number,
-        _triggerAboveThreshold: boolean,
-        _executionFee: number,
-        _shouldWrap: boolean
+        _acceptablePrice: any,
+        _executionFee: any,
+        _referralCode: any,
+        _callbackTarget: string
+
 
     }) => {
         try {
 
             const {
                 _path,
-                _amountIn,
                 _indexToken,
+                _amountIn,
                 _minOut,
                 _sizeDelta,
-                _collateralToken,
                 _isLong,
-                _triggerPrice,
-                _triggerAboveThreshold,
+                _acceptablePrice,
                 _executionFee,
-                _shouldWrap
+                _referralCode,
+                _callbackTarget,
+
             } = _params
 
-
-            const contract = await this.orderBookContractGMX()
-
-            const cretateOrderTx = await contract.callStatic.createIncreaseOrder(
+            console.log("in the contract")
+            const contract = await this.positionRouterContractsGMx()
+            const cretateOrderTx = await contract.callStatic.createIncreasePosition(
                 _path,
-                _amountIn,
                 _indexToken,
+                _amountIn,
                 _minOut,
                 _sizeDelta,
-                _collateralToken,
                 _isLong,
-                _triggerPrice,
-                _triggerAboveThreshold,
+                _acceptablePrice,
                 _executionFee,
-                _shouldWrap
+                _referralCode,
+                _callbackTarget
 
             )
 

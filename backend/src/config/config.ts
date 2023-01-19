@@ -12,7 +12,9 @@ export const config = {
 
     GMX_POSITION_ROUTER: process.env.GMX_POSITION_ROUTER!,
 
-    MONGO_DB_URL: process.env.MONGO_DB_URL!
+    MONGO_DB_URL: process.env.MONGO_DB_URL!,
+
+    USDC: process.env.USDC!
 
 
 }
