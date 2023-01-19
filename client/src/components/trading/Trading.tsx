@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react';
 
 const Trading = (props: any) => {
 
-    const [chooseLong, setChooseLong] = useState(false);
+    const [chooseLong, setChooseLong] = useState(true);
     const [tokens, setTokens] = useState<any>([]);
 
 
-    // const handleChooseLong = (e: any) => {
-    //     setChooseLong(true);
-    // }
+    const handleChooseLong = () => {
+        setChooseLong(true);
+        setChooseLong(!chooseLong);   
+    }
 
-    // const handleChooseShort = (e: any) => {
-    //     setChooseLong(false);
-    // }
+    const handleChooseShort = () => {
+        setChooseLong(!chooseLong);
+    }
 
     const getMarkets = async () => {
         try {
@@ -50,14 +51,14 @@ const Trading = (props: any) => {
                 <div className='flex justify-center w-2/5 p-2 text-sm font-semibold text-white bg-red-500'>PNL:80USD</div>
             </div>
             <div className="flex justify-center w-full space-x-6">
-                <button style={{ backgroundColor: chooseLong ? 'transparent' : '', }} onClick={() => setChooseLong(true)} className='flex items-center justify-center w-1/2 p-3 text-sm font-extrabold text-white rounded-lg long-btn bg-sky-500'>
+                <button style={{ backgroundColor: chooseLong ? 'transparent' : '' }} onClick={handleChooseLong} className='flex items-center justify-center w-1/2 p-3 text-sm font-extrabold text-white rounded-lg long-btn bg-sky-500'>
                     <span>LONG</span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" />
                     </svg>
                 </button>
                 <h1>value {chooseLong ? 'true' : "false"}</h1>
-                <button style={{ backgroundColor: chooseLong ? '' : 'transparent', }} onClick={() => setChooseLong(false)} className='flex items-center justify-center w-1/2 p-3 text-sm font-extrabold text-white bg-red-500 rounded-lg short-btn'>
+                <button style={{ backgroundColor: chooseLong ? '' : 'transparent' }} onClick={handleChooseShort} className='flex items-center justify-center w-1/2 p-3 text-sm font-extrabold text-white bg-red-500 rounded-lg short-btn'>
                     <span>SHORT</span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" />

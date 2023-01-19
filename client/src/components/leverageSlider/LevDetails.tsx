@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Axios from 'axios'
 import AppModal from '../GlobalModal/AppModal'
 import ConfirmBet from './ConfirmPosition'
@@ -32,10 +32,23 @@ export const LevDetails = (props: any) => {
   const url = 'http://localhost:3002/api/long'
 
   // const [paths, setPaths] = useState(addressesObj)
-  
+  const getMarkets = async () => {
+    try {
+        const response = fetch("https://api.gmx.io/prices");
+        const data = await (await response).json();
+
+        setTokens(data);
+        // console.log(data);
+        
+    } catch (error) {
+        console.error(onmessage)
+    }
+}
+
 
   //function to submit form data when button is clicked
   function handleSubmit(e: any) {
+    // getMarkets(); 
     setData({
       _path: [
         '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
@@ -53,7 +66,7 @@ export const LevDetails = (props: any) => {
       _shouldWrap: true,
     })
 
-    console.log(data._isLong)
+    console.log(data)
 
     Axios.post(url, {
       _path: data._path,
