@@ -20,13 +20,6 @@ const Tokens = [
         "symbol": "UNI",
         "name": "Uniswap"
     }
-//    {
-//     "USDC": {
-//         "address": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
-//         "symbol": "USDC",
-//         "name": "USD Coin"
-//     }
-//    }
 ]
 
 export default Tokens;

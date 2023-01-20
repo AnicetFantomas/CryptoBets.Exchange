@@ -32,28 +32,36 @@ export const LevDetails = (props: any) => {
   const url = 'http://localhost:3002/api/long'
 
   // const [paths, setPaths] = useState(addressesObj)
+
+  const [tokenMarket, setTokenMarket] = useState([])
+
   const getMarkets = async () => {
     try {
         const response = fetch("https://api.gmx.io/prices");
         const data = await (await response).json();
 
-        setTokens(data);
+        setTokenMarket(data);
         // console.log(data);
         
     } catch (error) {
         console.error(onmessage)
     }
-}
+  }
+
+  useEffect(() => {
+    getMarkets();
+  }, []);
+
+  console.log(tokenMarket)
 
 
   //function to submit form data when button is clicked
   function handleSubmit(e: any) {
-    // getMarkets(); 
-    setData({
-      _path: [
-        '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
-        `${0x82aF49447D8a07e3bd95BD0d56f35241523fBab1}`
-      ],
+    // getMarkets();
+
+    setData(
+      {
+      _path: ['0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', ''],
       _amountIn: `${props.result}`,
       _indexToken: '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f',
       _minOut: 0,
@@ -66,7 +74,7 @@ export const LevDetails = (props: any) => {
       _shouldWrap: true,
     })
 
-    console.log(data)
+    console.dir(data['_path'])
 
     Axios.post(url, {
       _path: data._path,
