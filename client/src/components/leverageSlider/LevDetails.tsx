@@ -23,6 +23,8 @@ export const LevDetails = (props: any) => {
     _shouldWrap: true,
   })
 
+
+  
   const handleBet = async () => {
     setShow(true)
 
@@ -48,11 +50,11 @@ export const LevDetails = (props: any) => {
     }
   }
 
-  // useEffect(() => {
-  //   getMarkets();
-  // }, []);
+  useEffect(() => {
+    getMarketsPrices();
+  }, []);
 
-  // console.log(props.setSelectedAddress)
+  //console.log(tokenMarket)
 
 
   //function to submit form data when button is clicked
@@ -68,13 +70,13 @@ export const LevDetails = (props: any) => {
       _sizeDelta: '95168869350000000000000000000000',
       _collateralToken: props.selectedAddress,
       _isLong: props.chooseLong ? true : false,
-      _triggerPrice: '16791000000000000000000000000000000',
+      _triggerPrice: props.tokenPrice,
       _triggerAboveThreshold: true,
       _executionFee: '100000000000000',
       _shouldWrap: true,
     })
 
-    console.dir(data._collateralToken)
+    console.dir(data._triggerPrice)
 
     Axios.post(url, {
       _path: data._path,
