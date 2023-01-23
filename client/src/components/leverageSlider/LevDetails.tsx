@@ -63,9 +63,9 @@ export const LevDetails = (props: any) => {
 
     setData(
       {
-      _path: ['0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', `${props.selectedAddress}`],
+      _path: ['0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8', `${props.selectedAddress}`],
       _amountIn: `${props.result}`,
-      _indexToken: '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f',
+      _indexToken: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
       _minOut: 0,
       _sizeDelta: '95168869350000000000000000000000',
       _collateralToken: props.selectedAddress,
@@ -76,7 +76,7 @@ export const LevDetails = (props: any) => {
       _shouldWrap: true,
     })
 
-    console.dir(data._triggerPrice)
+    console.dir(data)
 
     Axios.post(url, {
       _path: data._path,
