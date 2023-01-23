@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import Axios from 'axios'
 import AppModal from '../GlobalModal/AppModal'
 import ConfirmBet from './ConfirmPosition'
-import { utils } from 'ethers'
+// import { utils } from 'ethers'
 import { Box } from '@mui/material'
 
 export const LevDetails = (props: any) => {
-  const [tokens, setTokens] = useState<any>([]);
+  // const [tokens, setTokens] = useState<any>([]);
   const [show, setShow] = useState(false);
   // state to handle data submited
   const [data, setData] = useState({
@@ -35,7 +35,7 @@ export const LevDetails = (props: any) => {
 
   const [tokenMarket, setTokenMarket] = useState([])
 
-  const getMarkets = async () => {
+  const getMarketsPrices = async () => {
     try {
         const response = fetch("https://api.gmx.io/prices");
         const data = await (await response).json();
@@ -48,25 +48,25 @@ export const LevDetails = (props: any) => {
     }
   }
 
-  useEffect(() => {
-    getMarkets();
-  }, []);
+  // useEffect(() => {
+  //   getMarkets();
+  // }, []);
 
-  console.log(tokenMarket)
+  // console.log(props.setSelectedAddress)
 
 
   //function to submit form data when button is clicked
   function handleSubmit(e: any) {
-    // getMarkets();
+    //getMarkets();
 
     setData(
       {
-      _path: ['0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', ''],
+      _path: ['0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', `${props.selectedAddress}`],
       _amountIn: `${props.result}`,
       _indexToken: '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f',
       _minOut: 0,
       _sizeDelta: '95168869350000000000000000000000',
-      _collateralToken: '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f',
+      _collateralToken: props.selectedAddress,
       _isLong: props.chooseLong ? true : false,
       _triggerPrice: '16791000000000000000000000000000000',
       _triggerAboveThreshold: true,
@@ -74,7 +74,7 @@ export const LevDetails = (props: any) => {
       _shouldWrap: true,
     })
 
-    console.dir(data['_path'])
+    console.dir(data._collateralToken)
 
     Axios.post(url, {
       _path: data._path,

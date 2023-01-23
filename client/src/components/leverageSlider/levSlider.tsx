@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { LevDetails } from './LevDetails';
 import SliderBox from './SliderBox';
 import Trading from '../trading/Trading';
+import Tokens from '../trading/data';
 
 interface Props {}
 
@@ -17,7 +18,15 @@ const LevSlider  = (props: any) => {
 
     const [inputValue, setInputValue] = useState(0);
     const [result, setResult] = useState(0);
+    const [selectedAddress, setSelectedAddress] = useState("");
 
+    const handleSelectedSymbol = (symbol: string) => {
+        const selectedToken : any = Tokens.find(token => token.symbol === symbol)
+        setSelectedAddress(selectedToken ? selectedToken.address: "");
+    }
+    
+    console.log(selectedAddress)
+    
     const handleInputChange = (e: any) => {
         const {target} = e
         const {value} = target;
@@ -42,7 +51,7 @@ const LevSlider  = (props: any) => {
 
     return (
         <>
-            <Trading handleSliderChange={handleSliderChange} inputValue={inputValue} handleInputChange={handleInputChange} />
+            <Trading handleSelectedSymbol={handleSelectedSymbol} handleSliderChange={handleSliderChange} inputValue={inputValue} handleInputChange={handleInputChange} />
             <div className="flex flex-col m-5 ">
             <h2 className='self-start my-5 text-white'>Leverage</h2>
             <div className='flex self-center ml-3'>
@@ -84,7 +93,7 @@ const LevSlider  = (props: any) => {
             <SliderBox handleSliderChange={handleSliderChange} inputValue={inputValue} handleInputChange={handleInputChange} />
             
             <div>
-            <LevDetails handleBet={props.handleBet} sliderValue={sliderValue} result={result} />
+            <LevDetails selectedAddress={selectedAddress} handleBet={props.handleBet} sliderValue={sliderValue} result={result} />
             </div>
                 
             

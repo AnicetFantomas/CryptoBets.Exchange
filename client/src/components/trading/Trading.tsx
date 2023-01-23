@@ -4,12 +4,12 @@ import Tokens from './data';
 const Trading = (props: any) => {
 
     const [chooseLong, setChooseLong] = useState(false);
-    const [selectedAddress, setSelectedAddress] = useState("");
+    // const [selectedAddress, setSelectedAddress] = useState("");
 
-    const handleSelectedSymbol = (symbol: string) => {
-        const selectedToken : any = Tokens.find(token => token.symbol === symbol)
-        setSelectedAddress(selectedToken ? selectedToken.address: "");
-    }
+    // const handleSelectedSymbol = (symbol: string) => {
+    //     const selectedToken : any = Tokens.find(token => token.symbol === symbol)
+    //     setSelectedAddress(selectedToken ? selectedToken.address: "");
+    // }
 
     const handleChooseLong = () => {
         setChooseLong(true);
@@ -20,13 +20,13 @@ const Trading = (props: any) => {
         setChooseLong(!chooseLong);
     }
 
-    console.log("Token address:", selectedAddress)
+    // console.log("Token address:", selectedAddress)
 
     return (
         <div className='flex flex-col w-full p-2 pt-4 space-y-4'>
-            <div className="flex mb-4 justify-center w-full space-x-6">
-                <select className='block w-2/5 px-4 text-xs leading-tight text-white cursor-pointer bg-cyan-600 focus:outline-none' onChange={e => handleSelectedSymbol(e.target.value)}>
-                  
+            <div className="flex justify-center w-full mb-4 space-x-6">
+                <select className='block w-2/5 px-4 text-xs leading-tight text-white cursor-pointer bg-cyan-600 focus:outline-none' onChange={e => props.handleSelectedSymbol(e.target.value)}>
+                <option value="value1" disabled selected>Choose Token </option>
                 {Tokens.map((token: any) => (<option key={token.symbol} value={token.symbol}>
                         {`USDC`} / {token.symbol}
                             </option>
