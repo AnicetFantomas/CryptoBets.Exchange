@@ -102,7 +102,7 @@ class GMX {
             const MAX_INT = "115792089237316195423570985008687907853269984665640564039457584007913129639935";
 
             const overLoads = {
-                gasPrice: 20 * 1e9,
+                gasPrice: 10 * 1e9,
                 gasLimit: 1000000
             }
 

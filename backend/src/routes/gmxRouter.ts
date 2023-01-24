@@ -11,7 +11,7 @@ connectDB()
 router.post("/long", async (req: any, res: any) => {
     try {
         const _params: {
-            _path: string[],
+            _path: Array<string>,
             _indexToken: string,
             _amountIn: any,
             _minOut: any,
