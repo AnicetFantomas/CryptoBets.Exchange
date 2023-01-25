@@ -151,7 +151,7 @@ class GMX {
 
             } = _params
 
-            console.log("in the contract", { _params })
+
             const contract = await this.positionRouterContractsGMx()
             const cretateOrderTx = await contract.callStatic.createIncreasePosition(
                 _path,
@@ -178,6 +178,8 @@ class GMX {
         } catch (error) {
             console.log("Unable to place an order to GMX", error)
         }
+
+        return null;
     }
 
 
@@ -187,7 +189,7 @@ class GMX {
      * @returns  
      */
     createDecreasePosition = async (_params: {
-        _path: string[],
+        _path: any,
         _indexToken: string,
         _collateralDelta: any,
         _sizeDelta: any,
@@ -221,7 +223,7 @@ class GMX {
             const contractx = await this.positionRouterContractsGMx()
 
 
-            const createDecreaseOrderTx = await contractx.createDecreasePosition(
+            const createDecreaseOrderTx = await contractx.callStatic.createDecreasePosition(
                 _path,
                 _indexToken,
                 _collateralDelta,
