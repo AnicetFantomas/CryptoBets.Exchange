@@ -60,9 +60,9 @@ export const LevDetails = (props: any) => {
     setData({
       _path: [Config.FROM_TOKEN, `${props.selectedAddress}`],
       _indexToken: `${props.selectedAddress}`,
-      _amountIn: `${utils.parseUnits(props.result, 6)}`,
+      _amountIn: `${utils.parseUnits(props.inputValue, 6)}`,
       _minOut: 0,
-      _sizeDelta: '10962587295000000000000000000000',
+      _sizeDelta: `${utils.parseUnits(props.result, 6)}`,
       _isLong: props.chooseLong ? true : false,
       _acceptablePrice: `${utils.parseUnits(props.tokenPrice)}`,
       _executionFee: Config.EXECUTION_FEE,
@@ -106,10 +106,6 @@ export const LevDetails = (props: any) => {
       <div className="flex flex-col w-full ">
         <div>
           <div className="flex justify-between w-full">
-            <span className="text-white">Available liquidity</span>
-            <span className="text-sky-500">3,873.56</span>
-          </div>
-          <div className="flex justify-between w-full">
             <span className="text-white">Leverage</span>
             <span className="text-sky-500">{props.sliderValue}x</span>
           </div>
@@ -121,10 +117,7 @@ export const LevDetails = (props: any) => {
             <span className="text-white">Liq Price</span>
             <span className="text-sky-500">_</span>
           </div>
-          <div className="flex justify-between w-full">
-            <span className="text-white">Fees</span>
-            <span className="text-sky-500">_</span>
-          </div>
+          
         </div>
         <button
           onClick={handleBet}
