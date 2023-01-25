@@ -18,6 +18,8 @@ export const Config = {
      * this is the execution fee provided by GMX
      */
 
-    EXECUTION_FEE: "100000000000000"
+    EXECUTION_FEE: "100000000000000",
+
+    MIN_OUT: 0
 
 }

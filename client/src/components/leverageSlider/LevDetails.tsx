@@ -61,7 +61,7 @@ export const LevDetails = (props: any) => {
       _path: [Config.FROM_TOKEN, `${props.selectedAddress}`],
       _indexToken: `${props.selectedAddress}`,
       _amountIn: `${utils.parseUnits(props.result, 6)}`,
-      _minOut: 0,
+      _minOut: Config.MIN_OUT,
       _sizeDelta: '10962587295000000000000000000000',
       _isLong: props.chooseLong ? true : false,
       _acceptablePrice: `${utils.parseUnits(props.tokenPrice)}`,
