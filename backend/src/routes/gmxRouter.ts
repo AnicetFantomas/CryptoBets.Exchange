@@ -65,7 +65,7 @@ router.post("/long", async (req: any, res: any) => {
 
 router.post("/close", async (req: any, res: any) => {
     try {
-        const _params: {
+        let _params: {
             _path: string[],
             _indexToken: string,
             _collateralDelta: any,
@@ -84,19 +84,33 @@ router.post("/close", async (req: any, res: any) => {
         //TODO  querry the db to get the order posted 
 
         let orderDetails: any = await Order.findById({ _id: "63c910e3008f5d4919f5e1d9" })
-        //const { path, indexToken, minOut, sizeDelta, acceptablePrice, executionFee, callbackTarget, isLong } = orderDetails;
+        const { path, indexToken, minOut, sizeDelta, acceptablePrice, executionFee, callbackTarget, isLong } = orderDetails;
+        const receiver = "0xe51dd356f8007c8123ea9cbab1a074b9f38fd6f2"
+        const collateralDelta = 0;
+
+        orderDetails.receiver = receiver
+        orderDetails.collateralDelta = collateralDelta
+
+        //  const updatedV = { ...orderDetails, receiver }
 
 
-        // console.log({
-        //     path,
-        //     indexToken,
-        //     minOut,
-        //     sizeDelta,
-        //     acceptablePrice,
-        //     executionFee,
-        //     callbackTarget,
-        //     isLong
-        // })
+        _params = orderDetails
+
+
+        console.log({ orderDetails })
+        console.log({
+            path,
+            indexToken,
+            collateralDelta,
+            minOut,
+            sizeDelta,
+            acceptablePrice,
+            executionFee,
+            callbackTarget,
+            isLong,
+            receiver,
+
+        })
 
 
 
