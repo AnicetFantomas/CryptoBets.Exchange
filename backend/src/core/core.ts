@@ -134,7 +134,6 @@ class GMX {
         _referralCode: any,
         _callbackTarget: string
 
-
     }) => {
         try {
 
@@ -152,7 +151,7 @@ class GMX {
 
             } = _params
 
-            console.log("in the contract")
+            console.log("in the contract", { _params })
             const contract = await this.positionRouterContractsGMx()
             const cretateOrderTx = await contract.callStatic.createIncreasePosition(
                 _path,
@@ -164,7 +163,9 @@ class GMX {
                 _acceptablePrice,
                 _executionFee,
                 _referralCode,
-                _callbackTarget
+                _callbackTarget, {
+                value: _executionFee
+            }
 
             )
 
@@ -188,7 +189,7 @@ class GMX {
     createDecreasePosition = async (_params: {
         _path: string[],
         _indexToken: string,
-        _collateralDelta: number,
+        _collateralDelta: any,
         _sizeDelta: any,
         _isLong: boolean,
         _receiver: string,
@@ -215,10 +216,12 @@ class GMX {
 
             } = _params
 
-            const contract = await this.positionRouterContractsGMx()
+            console.log("In the contract", _params)
 
-            const createDecreaseOrderTx = await contract.callStatic.createDecreasePosition(
+            const contractx = await this.positionRouterContractsGMx()
 
+
+            const createDecreaseOrderTx = await contractx.createDecreasePosition(
                 _path,
                 _indexToken,
                 _collateralDelta,
@@ -229,7 +232,11 @@ class GMX {
                 _minOut,
                 _executionFee,
                 _withdrawETH,
-                _callbackTarget
+                _callbackTarget,
+                {
+                    gasLimit: 1000000,
+                    value: _executionFee
+                }
 
             )
 
@@ -238,8 +245,10 @@ class GMX {
             return createDecreaseOrderTx
 
         } catch (error) {
-            console.log()
+            console.log("failed too close the order", error)
         }
+
+        return null;
     }
 
 

@@ -9,5 +9,4 @@ export interface IOrder {
     callbackTarget: any,
     isLong: boolean,
     referralCode: string
-
 }

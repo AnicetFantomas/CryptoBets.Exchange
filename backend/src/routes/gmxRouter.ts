@@ -11,7 +11,7 @@ connectDB()
 router.post("/long", async (req: any, res: any) => {
     try {
         const _params: {
-            _path: Array<string>,
+            _path: string[],
             _indexToken: string,
             _amountIn: any,
             _minOut: any,
@@ -50,9 +50,9 @@ router.post("/long", async (req: any, res: any) => {
                 referralCode: req.body._referralCode
             })
 
-            //const orderData = await orderDetails.save()
+            const orderData = await orderDetails.save()
 
-            //res.send({ status: 200, orderData })
+            res.send({ status: 200, orderData })
 
 
         }
@@ -79,12 +79,28 @@ router.post("/close", async (req: any, res: any) => {
             _callbackTarget: string
         } = req.body
 
-        //approve the GMX_POSITION_ROUTER before closing a position order
-        const approve = await GmxWrapper.approvePlugin(config.GMX_POSITION_ROUTER)
 
-        console.log("APPROVED", approve)
 
-        if (approve) {
+        //TODO  querry the db to get the order posted 
+
+        let orderDetails: any = await Order.findById({ _id: "63c910e3008f5d4919f5e1d9" })
+        //const { path, indexToken, minOut, sizeDelta, acceptablePrice, executionFee, callbackTarget, isLong } = orderDetails;
+
+
+        // console.log({
+        //     path,
+        //     indexToken,
+        //     minOut,
+        //     sizeDelta,
+        //     acceptablePrice,
+        //     executionFee,
+        //     callbackTarget,
+        //     isLong
+        // })
+
+
+
+        if (orderDetails) {
 
             //closes the position
             const closeOrder = await GmxWrapper.createDecreasePosition(_params)
