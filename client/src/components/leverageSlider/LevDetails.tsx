@@ -4,31 +4,29 @@ import AppModal from '../GlobalModal/AppModal'
 import ConfirmBet from './ConfirmPosition'
 // import { utils } from 'ethers'
 import { Box } from '@mui/material'
+import { Config } from '../../config/config'
+import { BigNumber, utils } from 'ethers'
 
 export const LevDetails = (props: any) => {
   // const [tokens, setTokens] = useState<any>([]);
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false)
   // state to handle data submited
   const [data, setData] = useState({
     _path: [''],
-    _amountIn: '',
     _indexToken: '',
+    _amountIn: '',
     _minOut: 0,
     _sizeDelta: '',
-    _collateralToken: '',
     _isLong: true,
-    _triggerPrice: '',
-    _triggerAboveThreshold: true,
+    _acceptablePrice: '',
     _executionFee: '',
-    _shouldWrap: true,
+    _referralCode: '',
+    _callbackTarget: '',
   })
 
-
-  
   const handleBet = async () => {
     setShow(true)
-
- }  
+  }
 
   //url to handle enpoints from the backend
   const url = 'http://localhost:3002/api/long'
@@ -39,57 +37,52 @@ export const LevDetails = (props: any) => {
 
   const getMarketsPrices = async () => {
     try {
-        const response = fetch("https://api.gmx.io/prices");
-        const data = await (await response).json();
+      const response = fetch('https://api.gmx.io/prices')
+      const data = await (await response).json()
 
-        setTokenMarket(data);
-        // console.log(data);
-        
+      setTokenMarket(data)
+      // console.log(data);
     } catch (error) {
-        console.error(onmessage)
+      console.error(onmessage)
     }
   }
 
   useEffect(() => {
-    getMarketsPrices();
-  }, []);
+    getMarketsPrices()
+  }, [])
 
   //console.log(tokenMarket)
-
 
   //function to submit form data when button is clicked
   function handleSubmit(e: any) {
     //getMarkets();
 
-    setData(
-      {
-      _path: ['0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8', `${props.selectedAddress}`],
-      _amountIn: `${props.result}`,
-      _indexToken: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+    setData({
+      _path: [Config.FROM_TOKEN, `${props.selectedAddress}`],
+      _indexToken: `${props.selectedAddress}`,
+      _amountIn: `${utils.parseUnits(props.result, 6)}`,
       _minOut: 0,
-      _sizeDelta: '95168869350000000000000000000000',
-      _collateralToken: props.selectedAddress,
+      _sizeDelta: '10962587295000000000000000000000',
       _isLong: props.chooseLong ? true : false,
-      _triggerPrice: props.tokenPrice,
-      _triggerAboveThreshold: true,
-      _executionFee: '100000000000000',
-      _shouldWrap: true,
+      _acceptablePrice: `${utils.parseUnits(props.tokenPrice)}`,
+      _executionFee: Config.EXECUTION_FEE,
+      _referralCode: Config.REFERRAL_CODE,
+      _callbackTarget: Config.CALLBACK_TARGET,
     })
 
     console.dir(data)
 
     Axios.post(url, {
       _path: data._path,
-      _amountIn: data._amountIn,
       _indexToken: data._indexToken,
+      _amountIn: data._amountIn,
       _minOut: data._minOut,
       _sizeDelta: data._sizeDelta,
-      _collateralToken: data._collateralToken,
       _isLong: data._isLong,
-      _triggerPrice: data._triggerPrice,
-      _triggerAboveThreshold: data._triggerAboveThreshold,
+      _acceptablePrice: data._acceptablePrice,
       _executionFee: data._executionFee,
-      _shouldWrap: data._shouldWrap,
+      _referralCode: data._referralCode,
+      _callbackTarget: data._callbackTarget,
     }).then(async (res) => {
       console.log(res.data)
     })
@@ -99,38 +92,48 @@ export const LevDetails = (props: any) => {
 
   return (
     <Box>
-      <AppModal show={show} close={()=>setShow(false)} title='Create position'><ConfirmBet result={props.result} handleSubmit={handleSubmit} close={()=>setShow(false)} /></AppModal>
-        <div className="flex flex-col w-full ">
-          <div>
-            <div className="flex justify-between w-full">
-              <span className="text-white">Available liquidity</span>
-              <span className="text-sky-500">3,873.56</span>
-            </div>
-            <div className="flex justify-between w-full">
-              <span className="text-white">Leverage</span>
-              <span className="text-sky-500">{props.sliderValue}x</span>
-            </div>
-            <div className="flex justify-between w-full">
-              <span className="text-white">Entry Price</span>
-              <span className="text-sky-500">$16,048.21</span>
-            </div>
-            <div className="flex justify-between w-full">
-              <span className="text-white">Liq Price</span>
-              <span className="text-sky-500">${props.result}</span>
-            </div>
-            <div className="flex justify-between w-full">
-              <span className="text-white">Fees</span>
-              <span className="text-sky-500">_</span>
-            </div>
+      <AppModal
+        show={show}
+        close={() => setShow(false)}
+        title="Create position"
+      >
+        <ConfirmBet
+          result={props.result}
+          handleSubmit={handleSubmit}
+          close={() => setShow(false)}
+        />
+      </AppModal>
+      <div className="flex flex-col w-full ">
+        <div>
+          <div className="flex justify-between w-full">
+            <span className="text-white">Available liquidity</span>
+            <span className="text-sky-500">3,873.56</span>
           </div>
-          <button
-            onClick={handleBet}
-            className="p-3 my-5 text-xl text-white rounded-md bg-sky-500"
-            type="submit"
-          >
-            Place Order
-          </button>
+          <div className="flex justify-between w-full">
+            <span className="text-white">Leverage</span>
+            <span className="text-sky-500">{props.sliderValue}x</span>
+          </div>
+          <div className="flex justify-between w-full">
+            <span className="text-white">Entry Price</span>
+            <span className="text-sky-500">$16,048.21</span>
+          </div>
+          <div className="flex justify-between w-full">
+            <span className="text-white">Liq Price</span>
+            <span className="text-sky-500">_</span>
+          </div>
+          <div className="flex justify-between w-full">
+            <span className="text-white">Fees</span>
+            <span className="text-sky-500">_</span>
+          </div>
         </div>
+        <button
+          onClick={handleBet}
+          className="p-3 my-5 text-xl text-white rounded-md bg-sky-500"
+          type="submit"
+        >
+          Place Order
+        </button>
+      </div>
     </Box>
   )
 }

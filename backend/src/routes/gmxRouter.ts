@@ -1,28 +1,35 @@
 import * as express from "express";
 import { config } from "../config";
 import { GmxWrapper } from "../core";
+import { connectDB } from "../models/connection";
+import { Order } from "../models/schema";
 
 const router = express.Router();
+
+connectDB()
 
 router.post("/long", async (req: any, res: any) => {
     try {
         const _params: {
-            _path: any,
+            _path: string[],
+            _indexToken: string,
             _amountIn: any,
-            _indexToken: any,
             _minOut: any,
             _sizeDelta: any,
-            _collateralToken: any,
-            _isLong: any,
-            _triggerPrice: any,
-            _triggerAboveThreshold: any,
+            _isLong: boolean,
+            _acceptablePrice: any,
             _executionFee: any,
-            _shouldWrap: any
+            _callbackTarget: string,
+            _referralCode: string
         } = req.body
+
+        console.log(req.body)
 
         //call the approve function before creating an order to approve the GMX ROUTER
 
-        const approve = await GmxWrapper.approvePlugin(config.GMX_ROUTER)
+        const approve = await GmxWrapper.approve(config.USDC)
+
+        console.log("we are here")
 
         if (approve) {
 
@@ -30,7 +37,22 @@ router.post("/long", async (req: any, res: any) => {
 
             const order = await GmxWrapper.createIncreasePosition(_params)
 
-            res.send(order)
+            //save the order to the db
+            let orderDetails = new Order({
+                path: req.body._path,
+                indexToken: req.body._indexToken,
+                minOut: req.body._minOut,
+                sizeDelta: req.body._sizeDelta,
+                acceptablePrice: req.body._acceptablePrice,
+                executionFee: req.body._executionFee,
+                callbackTarget: req.body._callbackTarget,
+                isLong: req.body._isLong,
+                referralCode: req.body._referralCode
+            })
+
+            const orderData = await orderDetails.save()
+
+            res.send({ status: 200, orderData })
 
 
         }
@@ -57,12 +79,28 @@ router.post("/close", async (req: any, res: any) => {
             _callbackTarget: string
         } = req.body
 
-        //approve the GMX_POSITION_ROUTER before closing a position order
-        const approve = await GmxWrapper.approvePlugin(config.GMX_POSITION_ROUTER)
 
-        console.log("APPROVED", approve)
 
-        if (approve) {
+        //TODO  querry the db to get the order posted 
+
+        let orderDetails: any = await Order.findById({ _id: "63c910e3008f5d4919f5e1d9" })
+        //const { path, indexToken, minOut, sizeDelta, acceptablePrice, executionFee, callbackTarget, isLong } = orderDetails;
+
+
+        // console.log({
+        //     path,
+        //     indexToken,
+        //     minOut,
+        //     sizeDelta,
+        //     acceptablePrice,
+        //     executionFee,
+        //     callbackTarget,
+        //     isLong
+        // })
+
+
+
+        if (orderDetails) {
 
             //closes the position
             const closeOrder = await GmxWrapper.createDecreasePosition(_params)
