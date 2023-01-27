@@ -5,7 +5,7 @@ import Charts from '../components/Charts'
 import Trading from '../components/trading/Trading'
 import TabsLayout from '../components/Tabs/TabsLayout'
 
-const Layout = () => {
+const Layout = (props:any) => {
 
   
   return (
@@ -14,7 +14,6 @@ const Layout = () => {
       <Navbar/>
       <Charts/>
       <LevSlider />
-      < TabsLayout />
     </div>
 	</div>
   )
