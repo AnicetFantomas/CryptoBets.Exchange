@@ -6,34 +6,31 @@ import ConfirmBet from './ConfirmPosition'
 import { Box } from '@mui/material'
 import { Config } from '../../config/config'
 import { BigNumber, utils } from 'ethers'
+import TabsLayout from '../Tabs/TabsLayout'
 
-export const LevDetails = (props: any) => {
-  // const [tokens, setTokens] = useState<any>([]);
+export const url = 'http://localhost:3002/api/long'
+
+const LevDetails = (props: any) => {
   const [show, setShow] = useState(false)
+  const [tokenMarket, setTokenMarket] = useState([])
+
   // state to handle data submited
-  const [data, setData] = useState({
+  const [data, setData] = useState([{
     _path: [''],
     _indexToken: '',
     _amountIn: '',
     _minOut: 0,
-    _sizeDelta: '',
+    _sizeDelta: 0,
     _isLong: true,
     _acceptablePrice: '',
     _executionFee: '',
     _referralCode: '',
     _callbackTarget: '',
-  })
+  }])
 
   const handleBet = async () => {
     setShow(true)
   }
-
-  //url to handle enpoints from the backend
-  const url = 'http://localhost:3002/api/long'
-
-  // const [paths, setPaths] = useState(addressesObj)
-
-  const [tokenMarket, setTokenMarket] = useState([])
 
   const getMarketsPrices = async () => {
     try {
@@ -41,7 +38,6 @@ export const LevDetails = (props: any) => {
       const data = await (await response).json()
 
       setTokenMarket(data)
-      // console.log(data);
     } catch (error) {
       console.error(onmessage)
     }
@@ -51,39 +47,31 @@ export const LevDetails = (props: any) => {
     getMarketsPrices()
   }, [])
 
-  //console.log(tokenMarket)
+ 
 
   //function to submit form data when button is clicked
   function handleSubmit(e: any) {
-    //getMarkets();
 
-    setData({
-      _path: [Config.FROM_TOKEN, `${props.selectedAddress}`],
-      _indexToken: `${props.selectedAddress}`,
-      _amountIn: `${utils.parseUnits(props.result, 6)}`,
-      _minOut: Config.MIN_OUT,
-      _sizeDelta: '10962587295000000000000000000000',
-      _isLong: props.chooseLong ? true : false,
-      _acceptablePrice: `${utils.parseUnits(props.tokenPrice)}`,
-      _executionFee: Config.EXECUTION_FEE,
-      _referralCode: Config.REFERRAL_CODE,
-      _callbackTarget: Config.CALLBACK_TARGET,
-    })
+   const newMyPosition = {
+    _path: [Config.FROM_TOKEN, `${props.selectedAddress}`],
+    _indexToken: `${props.selectedAddress}`,
+    _amountIn: `${utils.parseUnits(props.inputValue, 6)}`,
+    _minOut: Config.MIN_OUT,
+    _sizeDelta: props.result * (10 ** 6),
+    _isLong: props.chooseLong ? true : false,
+    _acceptablePrice: `${utils.parseUnits(props.tokenPrice)}`,
+    _executionFee: Config.EXECUTION_FEE,
+    _referralCode: Config.REFERRAL_CODE,
+    _callbackTarget: Config.CALLBACK_TARGET,
+   }
+   const newOrders = [...data, newMyPosition];
+    setData(newOrders);
 
-    console.dir(data)
+    console.log(data)
+    
 
-    Axios.post(url, {
-      _path: data._path,
-      _indexToken: data._indexToken,
-      _amountIn: data._amountIn,
-      _minOut: data._minOut,
-      _sizeDelta: data._sizeDelta,
-      _isLong: data._isLong,
-      _acceptablePrice: data._acceptablePrice,
-      _executionFee: data._executionFee,
-      _referralCode: data._referralCode,
-      _callbackTarget: data._callbackTarget,
-    }).then(async (res) => {
+    Axios.post(url, data)
+    .then(async (res) => {
       console.log(res.data)
     })
 
@@ -91,6 +79,7 @@ export const LevDetails = (props: any) => {
   }
 
   return (
+    <>
     <Box>
       <AppModal
         show={show}
@@ -99,31 +88,26 @@ export const LevDetails = (props: any) => {
       >
         <ConfirmBet
           result={props.result}
+          inputValue={props.inputValue}
+          tokenPriceUsd={props.tokenPriceUsd}
           handleSubmit={handleSubmit}
+          // handleAddPosition={handleAddPosition}
           close={() => setShow(false)}
         />
-      </AppModal>
+      </AppModal >
       <div className="flex flex-col w-full ">
         <div>
-          <div className="flex justify-between w-full">
-            <span className="text-white">Available liquidity</span>
-            <span className="text-sky-500">3,873.56</span>
-          </div>
           <div className="flex justify-between w-full">
             <span className="text-white">Leverage</span>
             <span className="text-sky-500">{props.sliderValue}x</span>
           </div>
           <div className="flex justify-between w-full">
             <span className="text-white">Entry Price</span>
-            <span className="text-sky-500">$16,048.21</span>
+            <span className="text-sky-500">$ {props.tokenPriceUsd}</span>
           </div>
           <div className="flex justify-between w-full">
-            <span className="text-white">Liq Price</span>
-            <span className="text-sky-500">_</span>
-          </div>
-          <div className="flex justify-between w-full">
-            <span className="text-white">Fees</span>
-            <span className="text-sky-500">_</span>
+            <span className="text-white">Total Price</span>
+            <span className="text-sky-500">$ {props.result}</span>
           </div>
         </div>
         <button
@@ -135,5 +119,9 @@ export const LevDetails = (props: any) => {
         </button>
       </div>
     </Box>
+    < TabsLayout data={data} />
+    </>
   )
 }
+
+export default LevDetails

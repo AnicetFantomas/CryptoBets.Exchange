@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { LevDetails } from './LevDetails';
+import  LevDetails from './LevDetails';
 import SliderBox from './SliderBox';
 import Trading from '../trading/Trading';
 import Tokens from '../trading/data';
+import { utils } from 'ethers';
 
 interface Props { }
 
@@ -40,10 +41,11 @@ const LevSlider = (props: any) => {
         const found = Object.entries(obj).find(([k, v]) => k === key);
         return found ? found[1] : null;
       }
-    //  const filteredData = apiData.filter(entry => entry.key === selectedAddress);
-    const tokenPrice = getValueFromKey(apiData, selectedAddress);
+    const tokenPrice : any = getValueFromKey(apiData, selectedAddress);
+
+    const tokenPriceUsd = tokenPrice * Math.pow(10, -30);
     
-    console.log(tokenPrice)
+    // console.log(tokenPriceUsd)
 
 
     // end try get value
@@ -120,9 +122,8 @@ const LevSlider = (props: any) => {
                 <SliderBox handleSliderChange={handleSliderChange} inputValue={inputValue} handleInputChange={handleInputChange} />
 
                 <div>
-                    <LevDetails tokenPrice={tokenPrice} selectedAddress={selectedAddress} handleBet={props.handleBet} sliderValue={sliderValue} result={result} />
+                    <LevDetails tokenPrice={tokenPrice} tokenPriceUsd={tokenPriceUsd} selectedAddress={selectedAddress} handleBet={props.handleBet} inputValue={inputValue} sliderValue={sliderValue} result={result} />
                 </div>
-
 
             </div>
         </>
