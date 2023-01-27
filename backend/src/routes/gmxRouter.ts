@@ -1,3 +1,4 @@
+import { utils } from "ethers";
 import * as express from "express";
 import { config } from "../config";
 import { GmxWrapper } from "../core";
@@ -65,51 +66,68 @@ router.post("/long", async (req: any, res: any) => {
 
 router.post("/close", async (req: any, res: any) => {
     try {
-        let _params: {
-            _path: string[],
-            _indexToken: string,
-            _collateralDelta: any,
-            _sizeDelta: any,
-            _isLong: boolean,
-            _receiver: string,
-            _acceptablePrice: any,
-            _minOut: any,
-            _executionFee: any,
-            _withdrawETH: boolean,
-            _callbackTarget: string
-        } = req.body
+        // let _params: {
+        //     _path: string[],
+        //     _indexToken: string,
+        //     _collateralDelta: any,
+        //     _sizeDelta: any,
+        //     _isLong: boolean,
+        //     _receiver: string,
+        //     _acceptablePrice: any,
+        //     _minOut: any,
+        //     _executionFee: any,
+        //     _withdrawETH: boolean,
+        //     _callbackTarget: string
+        // } = req.body
 
 
 
         //TODO  querry the db to get the order posted 
 
-        let orderDetails: any = await Order.findById({ _id: "63c910e3008f5d4919f5e1d9" })
+        let orderDetails: any = await Order.findById({
+            _id: "63d2814fda5312e7e6433f9a"
+        })
         const { path, indexToken, minOut, sizeDelta, acceptablePrice, executionFee, callbackTarget, isLong } = orderDetails;
-        const receiver = "0xe51dd356f8007c8123ea9cbab1a074b9f38fd6f2"
+        const receiver = config.RECEIVER_ADDRESS
         const collateralDelta = 0;
+        const withdrawETH = true
+
+        let _path = path.reverse()
+        _path[1] = config.WETH
+
+        let _acceptablePrice = acceptablePrice
 
         orderDetails.receiver = receiver
         orderDetails.collateralDelta = collateralDelta
+        orderDetails.withdrawETH = withdrawETH
+        orderDetails._path = _path
+        orderDetails._acceptablePrice = _acceptablePrice
 
         //  const updatedV = { ...orderDetails, receiver }
 
 
-        _params = orderDetails
+        orderDetails = req.body
 
-
-        console.log({ orderDetails })
         console.log({
-            path,
+            _path,
             indexToken,
             collateralDelta,
             minOut,
             sizeDelta,
-            acceptablePrice,
+            _acceptablePrice,
             executionFee,
             callbackTarget,
             isLong,
             receiver,
+            withdrawETH
 
+        })
+
+
+
+        Order.findOne({}, { _id: 2 }, async (err, doc: any) => {
+            if (err) throw err;
+            console.log(doc._id);
         })
 
 
@@ -117,7 +135,19 @@ router.post("/close", async (req: any, res: any) => {
         if (orderDetails) {
 
             //closes the position
-            const closeOrder = await GmxWrapper.createDecreasePosition(_params)
+            const closeOrder = await GmxWrapper.createDecreasePosition(
+                path,
+                indexToken,
+                collateralDelta,
+                minOut,
+                isLong,
+                receiver,
+                acceptablePrice,
+                minOut,
+                executionFee,
+                withdrawETH,
+                callbackTarget
+            )
 
 
             console.log("We reached here", closeOrder)
