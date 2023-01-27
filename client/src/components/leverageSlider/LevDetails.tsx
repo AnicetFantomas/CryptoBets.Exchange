@@ -64,7 +64,7 @@ export const LevDetails = (props: any) => {
       _minOut: Config.MIN_OUT,
       _sizeDelta: '10962587295000000000000000000000',
       _isLong: props.chooseLong ? true : false,
-      _acceptablePrice: `${utils.parseUnits(props.tokenPrice)}`,
+      _acceptablePrice: `${utils.parseUnits(props.tokenPrice.toString())}`,
       _executionFee: Config.EXECUTION_FEE,
       _referralCode: Config.REFERRAL_CODE,
       _callbackTarget: Config.CALLBACK_TARGET,
