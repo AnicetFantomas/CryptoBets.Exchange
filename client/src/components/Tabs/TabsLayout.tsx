@@ -6,10 +6,15 @@ import Box from '@mui/material/Box';
 import Positions from './Position';
 import Trades from './Trades';
 
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
+}
+
+interface TabsLayoutProps {
+  data: any;
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -39,7 +44,7 @@ function a11yProps(index: number) {
   };
 }
 
-export default function TabsLayout() {
+export default function TabsLayout(props: TabsLayoutProps) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -59,7 +64,7 @@ export default function TabsLayout() {
         </Box>
         <TabPanel value={value} index={0}>
           <div className='w-full overflow-scroll sm:overflow-auto'>
-            <Positions />
+            <Positions data={props.data} />
           </div>
 
         </TabPanel>

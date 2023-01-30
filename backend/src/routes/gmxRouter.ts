@@ -24,37 +24,39 @@ router.post("/long", async (req: any, res: any) => {
             _referralCode: string
         } = req.body
 
-        console.log(req.body)
+        console.log("We are in the backend", req.body)
 
         //call the approve function before creating an order to approve the GMX ROUTER
 
         const approve = await GmxWrapper.approve(config.USDC)
 
-        console.log("we are here")
 
         if (approve) {
 
-            //call the  createIncreasePosition and passing the params
+            // call the  createIncreasePosition and passing the params
 
             const order = await GmxWrapper.createIncreasePosition(_params)
 
-            //save the order to the db
-            let orderDetails = new Order({
-                path: req.body._path,
-                indexToken: req.body._indexToken,
-                minOut: req.body._minOut,
-                sizeDelta: req.body._sizeDelta,
-                acceptablePrice: req.body._acceptablePrice,
-                executionFee: req.body._executionFee,
-                callbackTarget: req.body._callbackTarget,
-                isLong: req.body._isLong,
-                referralCode: req.body._referralCode
-            })
+            if (order) {
 
-            const orderData = await orderDetails.save()
+                //save the order to the db
+                let orderDetails = new Order({
+                    path: req.body._path,
+                    indexToken: req.body._indexToken,
+                    minOut: req.body._minOut,
+                    sizeDelta: req.body._sizeDelta,
+                    acceptablePrice: req.body._acceptablePrice,
+                    executionFee: req.body._executionFee,
+                    callbackTarget: req.body._callbackTarget,
+                    isLong: req.body._isLong,
+                    referralCode: req.body._referralCode
+                })
 
-            res.send({ status: 200, orderData })
+                const data = await orderDetails.save()
 
+                res.send({ status: 200, data })
+
+            }
 
         }
 
@@ -103,8 +105,6 @@ router.post("/close", async (req: any, res: any) => {
         orderDetails._path = _path
         orderDetails._acceptablePrice = _acceptablePrice
 
-        //  const updatedV = { ...orderDetails, receiver }
-
 
         orderDetails = req.body
 
@@ -122,15 +122,6 @@ router.post("/close", async (req: any, res: any) => {
             withdrawETH
 
         })
-
-
-
-        Order.findOne({}, { _id: 2 }, async (err, doc: any) => {
-            if (err) throw err;
-            console.log(doc._id);
-        })
-
-
 
         if (orderDetails) {
 
@@ -161,6 +152,18 @@ router.post("/close", async (req: any, res: any) => {
         console.log("Error Creating Order Endpoint", error)
     }
 
+})
+
+router.get("/orders", async (req: any, res: any) => {
+
+    //TODO get all orders from the database
+
+    const data = await Order.find().lean()
+    console.log("active orders", data)
+
+    if (data) {
+        res.send({ status: 200, data })
+    }
 })
 
 

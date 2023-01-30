@@ -4,12 +4,6 @@ import Tokens from './data';
 const Trading = (props: any) => {
 
     const [chooseLong, setChooseLong] = useState(false);
-    // const [selectedAddress, setSelectedAddress] = useState("");
-
-    // const handleSelectedSymbol = (symbol: string) => {
-    //     const selectedToken : any = Tokens.find(token => token.symbol === symbol)
-    //     setSelectedAddress(selectedToken ? selectedToken.address: "");
-    // }
 
     const handleChooseLong = () => {
         setChooseLong(true);
@@ -19,8 +13,6 @@ const Trading = (props: any) => {
     const handleChooseShort = () => {
         setChooseLong(!chooseLong);
     }
-
-    // console.log("Token address:", selectedAddress)
 
     return (
         <div className='flex flex-col w-full p-2 pt-4 space-y-4'>
