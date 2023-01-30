@@ -188,7 +188,7 @@ class GMX {
      * @param _params these are the params required for creating a short order
      * @returns  
      */
-    createDecreasePosition = async (_params: {
+    createDecreasePosition = async (
         _path: any,
         _indexToken: string,
         _collateralDelta: any,
@@ -197,28 +197,28 @@ class GMX {
         _receiver: string,
         _acceptablePrice: any,
         _minOut: any,
-        _executionFee: any
+        _executionFee: any,
         _withdrawETH: boolean,
         _callbackTarget: string
 
-    }) => {
+    ) => {
         try {
-            const {
-                _path,
-                _indexToken,
-                _collateralDelta,
-                _sizeDelta,
-                _isLong,
-                _receiver,
-                _acceptablePrice,
-                _minOut,
-                _executionFee,
-                _withdrawETH,
-                _callbackTarget
+            // const {
+            //     _path,
+            //     _indexToken,
+            //     _collateralDelta,
+            //     _sizeDelta,
+            //     _isLong,
+            //     _receiver,
+            //     _acceptablePrice,
+            //     _minOut,
+            //     _executionFee,
+            //     _withdrawETH,
+            //     _callbackTarget
 
-            } = _params
+            // } = _params
 
-            console.log("In the contract", _params)
+            console.log("In the contract",)
 
             const contractx = await this.positionRouterContractsGMx()
 
