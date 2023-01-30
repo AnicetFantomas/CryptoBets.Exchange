@@ -141,6 +141,8 @@ router.post("/close", async (req: any, res: any) => {
             )
 
 
+
+
             console.log("We reached here", closeOrder)
 
             res.send(closeOrder)
@@ -164,6 +166,24 @@ router.get("/orders", async (req: any, res: any) => {
     if (data) {
         res.send({ status: 200, data })
     }
+})
+
+router.delete("/activeOrder", async (req: any, res: any) => {
+    try {
+        const { id } = req.body
+        const removeOrder = await Order.findByIdAndDelete({ _id: id })
+
+        if (removeOrder) {
+
+            console.log("order removed", removeOrder)
+
+            res.send({ status: 200, removeOrder })
+        }
+
+    } catch (error) {
+        console.log("Unable to delete order from DB")
+    }
+    return null
 })
 
 
