@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import AppModal from '../GlobalModal/AppModal'
 import { ConfirmCancel } from './ConfirmCancel'
+import axios from 'axios'
 
 const Orders = (props: any) => {
   const [show, setShow] = useState(false)
@@ -30,6 +31,12 @@ const Orders = (props: any) => {
   useEffect(() => {
     getOrders()
   }, []);
+
+  const handleDelete = async (id: any) => {
+    await axios.delete(`${getUrl}/${id}`);
+    console.log('id', {id})
+    setAllOrders(allOrders.filter((order:any) => order._id !== id));
+  };
 
   return (
     <>
@@ -70,9 +77,18 @@ const Orders = (props: any) => {
                       <td className="pl-8 whitespace-nowrap">
                         {position.acceptablePrice * Math.pow(10, -40)}
                       </td>
+                      <td className="pl-8 whitespace-nowrap">
+                        {position._id}
+                      </td>
                       <td className="pl-8 ">
-                        <button
+                        {/* <button
                           onClick={() => handleCancel(position._id)}
+                          className="p-2 my-2 font-semibold text-gray-200 transition duration-500 bg-red-500 rounded-lg hover:bg-slate-700"
+                        >
+                          Close
+                        </button> */}
+                        <button
+                          onClick={() => handleDelete(position._id)}
                           className="p-2 my-2 font-semibold text-gray-200 transition duration-500 bg-red-500 rounded-lg hover:bg-slate-700"
                         >
                           Close
