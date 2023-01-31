@@ -28,20 +28,21 @@ router.post("/long", async (req: any, res: any) => {
 
         //call the approve function before creating an order to approve the GMX ROUTER
 
-        const approve = await GmxWrapper.approve(config.USDC)
+        // const approve = await GmxWrapper.approve(config.USDC)
 
 
-        if (approve) {
+        // if (approve) {
 
             // call the  createIncreasePosition and passing the params
 
-            const order = await GmxWrapper.createIncreasePosition(_params)
+            // const order = await GmxWrapper.createIncreasePosition(_params)
 
-            if (order) {
+            // if (order) {
 
                 //save the order to the db
                 let orderDetails = new Order({
                     path: req.body._path,
+                    amountIn: req.body._amountIn,
                     indexToken: req.body._indexToken,
                     minOut: req.body._minOut,
                     sizeDelta: req.body._sizeDelta,
@@ -56,9 +57,9 @@ router.post("/long", async (req: any, res: any) => {
 
                 res.send({ status: 200, data })
 
-            }
+        //     }
 
-        }
+        // }
 
     } catch (error) {
         console.log("Error Creating Order Endpoint", error)
@@ -89,7 +90,7 @@ router.post("/close", async (req: any, res: any) => {
         let orderDetails: any = await Order.findById({
             _id: "63d2814fda5312e7e6433f9a"
         })
-        const { path, indexToken, minOut, sizeDelta, acceptablePrice, executionFee, callbackTarget, isLong } = orderDetails;
+        const { path, indexToken, minOut, sizeDelta, amountIn, acceptablePrice, executionFee, callbackTarget, isLong } = orderDetails;
         const receiver = config.RECEIVER_ADDRESS
         const collateralDelta = 0;
         const withdrawETH = true
@@ -130,7 +131,7 @@ router.post("/close", async (req: any, res: any) => {
                 path,
                 indexToken,
                 collateralDelta,
-                minOut,
+                amountIn,
                 isLong,
                 receiver,
                 acceptablePrice,
@@ -164,7 +165,7 @@ router.get("/orders", async (req: any, res: any) => {
     console.log("active orders", data)
 
     if (data) {
-        res.send({ status: 200, data })
+        res.send( data )
     }
 })
 

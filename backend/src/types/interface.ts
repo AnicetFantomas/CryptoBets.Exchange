@@ -1,5 +1,6 @@
 export interface IOrder {
     path: any,
+    amountIn: any,
     indexToken: string,
     minOut: any,
     sizeDelta: any,
