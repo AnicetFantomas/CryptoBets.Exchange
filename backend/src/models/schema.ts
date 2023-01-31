@@ -4,6 +4,7 @@ import { IOrder } from "../types/interface";
 const OrderSchema = new Schema<IOrder>(
     {
         path: { type: Array<String> },
+        amountIn: { type: String },
         indexToken: { type: String },
         minOut: { type: Number },
         sizeDelta: { type: String },

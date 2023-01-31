@@ -5,7 +5,7 @@ import ConfirmBet from './ConfirmPosition'
 // import { utils } from 'ethers'
 import { Box } from '@mui/material'
 import { Config } from '../../config/config'
-import { BigNumber, utils } from 'ethers'
+import {  utils } from 'ethers'
 import TabsLayout from '../Tabs/TabsLayout'
 
 export const url = 'http://localhost:3002/api/long'
@@ -14,21 +14,22 @@ const LevDetails = (props: any) => {
   const [show, setShow] = useState(false)
   const [tokenMarket, setTokenMarket] = useState([])
 
+
   // state to handle data submited
-  const [data, setData] = useState([
+  const [data, setData] = useState(
     {
       _path: [''],
       _indexToken: '',
       _amountIn: '',
       _minOut: 0,
-      _sizeDelta: '',
+      _sizeDelta: 0,
       _isLong: true,
       _acceptablePrice: '',
       _executionFee: '',
       _referralCode: '',
       _callbackTarget: '',
     },
-  ])
+  )
 
   const handleBet = async () => {
     setShow(true)
@@ -49,31 +50,44 @@ const LevDetails = (props: any) => {
     getMarketsPrices()
   }, [])
 
-  //function to submit form data when button is clicked
-  function handleSubmit(e: any) {
-    const newMyPosition = {
-      _path: [Config.FROM_TOKEN, `${props.selectedAddress}`],
-      _indexToken: `${props.selectedAddress}`,
-      _amountIn: `${utils.parseUnits(props.inputValue, 6)}`,
-      _minOut: Config.MIN_OUT,
-      _sizeDelta: `${utils.parseUnits(props.result.toString(), 30)}`,
-      _isLong: props.chooseLong ? true : false,
-      _acceptablePrice: `${props.tokenPrice.toString()}`,
-      _executionFee: Config.EXECUTION_FEE,
-      _referralCode: Config.REFERRAL_CODE,
-      _callbackTarget: Config.CALLBACK_TARGET,
-    }
-    const newOrders = [...data, newMyPosition]
-    setData(newOrders)
+  const [postData, setPostData] = useState({});
 
-    console.log(data)
+  const handleSubmit = (e: any) => {
+    e.preventDefault()
 
-    Axios.post(url, data).then(async (res) => {
-      console.log(res.data)
-    })
+    setPostData(
+      {
+       _path: [Config.FROM_TOKEN, `${props.selectedAddress}`],
+       _indexToken: `${props.selectedAddress}`,
+       _amountIn: `${utils.parseUnits(props.inputValue, 6)}`,
+       _minOut: Config.MIN_OUT,
+       _sizeDelta: props.result * (10 ** 6),
+       _isLong: props.chooseLong ? true : false,
+       _acceptablePrice: `${utils.parseUnits(props.tokenPrice)}`,
+       _executionFee: Config.EXECUTION_FEE,
+       _referralCode: Config.REFERRAL_CODE,
+       _callbackTarget: Config.CALLBACK_TARGET,
+      }
+   )
 
     setShow(false)
   }
+
+  useEffect(() => {
+    if (Object.keys(postData).length) {
+      Axios.post(url, postData)
+        .then(async (res) => {
+          console.log(res.data);
+          setData({postData, ...res.data});
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [postData]);
+
+
+  console.log(data);
 
   return (
     <>
@@ -88,7 +102,6 @@ const LevDetails = (props: any) => {
             inputValue={props.inputValue}
             tokenPriceUsd={props.tokenPriceUsd}
             handleSubmit={handleSubmit}
-            // handleAddPosition={handleAddPosition}
             close={() => setShow(false)}
           />
         </AppModal>
