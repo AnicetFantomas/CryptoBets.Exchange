@@ -50,11 +50,12 @@ const LevDetails = (props: any) => {
     getMarketsPrices()
   }, [])
 
+  const [postData, setPostData] = useState({});
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
 
-    setData(
+    setPostData(
       {
        _path: [Config.FROM_TOKEN, `${props.selectedAddress}`],
        _indexToken: `${props.selectedAddress}`,
@@ -69,14 +70,23 @@ const LevDetails = (props: any) => {
       }
    )
 
-    Axios.post(url, data).then(async (res) => {
-      console.log(res.data)
-    })
-
-    // console.log(newMyPosition)
-
     setShow(false)
   }
+
+  useEffect(() => {
+    if (Object.keys(postData).length) {
+      Axios.post(url, postData)
+        .then(async (res) => {
+          console.log(res.data);
+          setData({postData, ...res.data});
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [postData]);
+
+
   console.log(data);
 
   return (
