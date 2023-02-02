@@ -38,7 +38,7 @@ const Orders = (props: any) => {
         close={() => setShow(false)}
         title="Do you want to close this position ?"
       >
-        <ConfirmCancel close={() => setShow(false)} />
+        <ConfirmCancel id={id} close={() => setShow(false)} />
       </AppModal>
       <div className="flex justify-center w-full">
         <div className="flex flex-col w-full">
