@@ -43,4 +43,8 @@
       margin-top: 70px;
       margin-left: -1050px;
     }
+
+    #my-container {
+      margin-left: 30px;
+    }
 }
