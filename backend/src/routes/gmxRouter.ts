@@ -2,12 +2,10 @@ import { utils } from "ethers";
 import * as express from "express";
 import { config } from "../config";
 import { GmxWrapper } from "../core";
-import { connectDB } from "../models/connection";
+import  "../models/connection";
 import { Order } from "../models/schema";
 
 const router = express.Router();
-
-connectDB()
 
 router.post("/long", async (req: any, res: any) => {
     try {
@@ -169,9 +167,9 @@ router.get("/orders", async (req: any, res: any) => {
     }
 })
 
-router.delete("/activeOrder", async (req: any, res: any) => {
+router.delete("/activeOrder/:id", async (req: any, res: any) => {
     try {
-        const { id } = req.body
+        const id  = req.params.id
         const removeOrder = await Order.findByIdAndDelete({ _id: id })
 
         if (removeOrder) {
@@ -183,6 +181,8 @@ router.delete("/activeOrder", async (req: any, res: any) => {
 
     } catch (error) {
         console.log("Unable to delete order from DB")
+        res.send({ status: 500, error: "Unable to delete order from DB" })
+
     }
     return null
 })
