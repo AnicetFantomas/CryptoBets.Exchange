@@ -75,9 +75,9 @@ const LevDetails = (props: any) => {
     toast.promise(
       resolveAfter3Sec,
       {
-        pending: 'Your order is being created!',
-        success: 'Your order has been created successfully! 👌',
-        error: 'Unable to create order 🤯'
+        pending: 'Your order is being placed!',
+        success: 'Your order has been placed successfully! 👌',
+        error: 'Unable to place order 🤯'
       }
     )
 

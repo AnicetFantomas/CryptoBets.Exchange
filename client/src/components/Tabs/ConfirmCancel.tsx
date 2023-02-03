@@ -14,7 +14,13 @@ export const ConfirmCancel = (props: any) => {
           'Content-Type': 'application/json',
         },
       })
-      const resolveAfter3Sec = new Promise(resolve => setTimeout(resolve, 3000));
+      
+      setPosition(position.filter((item: any) => item._id !== id))
+    } catch (error) {
+      console.error(error)
+    }
+    
+    const resolveAfter3Sec = new Promise(resolve => setTimeout(resolve, 3000));
       toast.promise(
         resolveAfter3Sec,
         {
@@ -23,10 +29,6 @@ export const ConfirmCancel = (props: any) => {
           error: 'Unable to create order 🤯'
         }
       )
-      setPosition(position.filter((item: any) => item._id !== id))
-    } catch (error) {
-      console.error(error)
-    }
   }
 
 
