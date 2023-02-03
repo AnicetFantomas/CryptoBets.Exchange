@@ -5,8 +5,9 @@ import ConfirmBet from './ConfirmPosition'
 // import { utils } from 'ethers'
 import { Box } from '@mui/material'
 import { Config } from '../../config/config'
-import {  utils } from 'ethers'
+import { utils } from 'ethers'
 import TabsLayout from '../Tabs/TabsLayout'
+import { toast } from 'react-toastify'
 
 export const url = 'http://localhost:3002/api/long'
 
@@ -57,18 +58,28 @@ const LevDetails = (props: any) => {
 
     setPostData(
       {
-       _path: [Config.FROM_TOKEN, `${props.selectedAddress}`],
-       _indexToken: `${props.selectedAddress}`,
-       _amountIn: `${utils.parseUnits(props.inputValue, 6)}`,
-       _minOut: Config.MIN_OUT,
-       _sizeDelta: props.result * (10 ** 6),
-       _isLong: props.chooseLong ? true : false,
-       _acceptablePrice: `${utils.parseUnits(props.tokenPrice)}`,
-       _executionFee: Config.EXECUTION_FEE,
-       _referralCode: Config.REFERRAL_CODE,
-       _callbackTarget: Config.CALLBACK_TARGET,
+        _path: [Config.FROM_TOKEN, `${props.selectedAddress}`],
+        _indexToken: `${props.selectedAddress}`,
+        _amountIn: `${utils.parseUnits(props.inputValue, 6)}`,
+        _minOut: Config.MIN_OUT,
+        _sizeDelta: props.result * (10 ** 6),
+        _isLong: props.chooseLong ? true : false,
+        _acceptablePrice: `${utils.parseUnits(props.tokenPrice)}`,
+        _executionFee: Config.EXECUTION_FEE,
+        _referralCode: Config.REFERRAL_CODE,
+        _callbackTarget: Config.CALLBACK_TARGET,
       }
-   )
+    )
+
+    const resolveAfter3Sec = new Promise(resolve => setTimeout(resolve, 3000));
+    toast.promise(
+      resolveAfter3Sec,
+      {
+        pending: 'Your order is being created!',
+        success: 'Your order has been created successfully! 👌',
+        error: 'Unable to create order 🤯'
+      }
+    )
 
     setShow(false)
   }
@@ -78,7 +89,7 @@ const LevDetails = (props: any) => {
       Axios.post(url, postData)
         .then(async (res) => {
           console.log(res.data);
-          setData({postData, ...res.data});
+          setData({ postData, ...res.data });
         })
         .catch((error) => {
           console.error(error);
