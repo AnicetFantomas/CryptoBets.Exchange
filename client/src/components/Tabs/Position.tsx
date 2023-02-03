@@ -23,6 +23,8 @@ const Orders = (props: any) => {
     } catch (error) {
       console.error(error)
     }
+
+    
   }
 
   console.log(allOrders);
