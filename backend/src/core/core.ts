@@ -31,7 +31,7 @@ class GMX {
      * @returns  a contract instance for the order book contract
      */
 
-    orderBookContractGMX = async () => {
+    orderBookContractGMX = async (signer: string) => {
         return new Contract(
             config.ORDER_BOOK_ROUTER,
             ORDER_BOOK_ABI,
@@ -102,11 +102,11 @@ class GMX {
             const MAX_INT = "115792089237316195423570985008687907853269984665640564039457584007913129639935";
 
             const overLoads = {
-                gasPrice: 10 * 1e9,
+                gasPrice: 20 * 1e9,
                 gasLimit: 1000000
             }
 
-            const approveTx = await contract.callStatic.approve(config.GMX_ROUTER, MAX_INT, overLoads)
+            const approveTx = await contract.approve(config.GMX_ROUTER, MAX_INT, overLoads)
 
             console.log("******APPROVE TRANSACTION********", approveTx.hash)
             return { success: true, data: `${approveTx.hash}` };
@@ -151,9 +151,11 @@ class GMX {
 
             } = _params
 
+            console.log("we ere in the contract", _params)
+
 
             const contract = await this.positionRouterContractsGMx()
-            const cretateOrderTx = await contract.callStatic.createIncreasePosition(
+            const cretateOrderTx = await contract.createIncreasePosition(
                 _path,
                 _indexToken,
                 _amountIn,
@@ -223,7 +225,7 @@ class GMX {
             const contractx = await this.positionRouterContractsGMx()
 
 
-            const createDecreaseOrderTx = await contractx.callStatic.createDecreasePosition(
+            const createDecreaseOrderTx = await contractx.createDecreasePosition(
                 _path,
                 _indexToken,
                 _collateralDelta,
@@ -236,7 +238,7 @@ class GMX {
                 _withdrawETH,
                 _callbackTarget,
                 {
-                    gasLimit: 1000000,
+                    gasLimit: 2000000,
                     value: _executionFee
                 }
 
