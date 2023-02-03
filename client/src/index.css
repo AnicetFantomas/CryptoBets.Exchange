@@ -37,3 +37,10 @@
     margin: 0;
   }
 }
+
+@media screen and (min-width: 768px) {
+    #table-trade {
+      margin-top: 70px;
+      margin-left: -1050px;
+    }
+}

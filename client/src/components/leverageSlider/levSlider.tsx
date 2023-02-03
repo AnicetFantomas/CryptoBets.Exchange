@@ -80,7 +80,7 @@ const LevSlider = (props: any) => {
 
     return (
         <>
-            <div className="sm:flex-col sm:mx-12">
+            <div className="sm:flex-col sm:m-12 sm:mt-14">
                 <Trading handleSelectedSymbol={handleSelectedSymbol} handleSliderChange={handleSliderChange} inputValue={inputValue} handleInputChange={handleInputChange} />
                 <div className="flex flex-col m-5 ">
                     <h2 className='self-start my-5 text-white'>Leverage</h2>
