@@ -16,6 +16,9 @@ const LevDetails = (props: any) => {
   const [tokenMarket, setTokenMarket] = useState([])
 
 
+  console.log("Props ", props)
+
+
   // state to handle data submited
   const [data, setData] = useState(
     {
@@ -25,7 +28,7 @@ const LevDetails = (props: any) => {
       _minOut: 0,
       _sizeDelta: 0,
       _isLong: true,
-      _acceptablePrice: '',
+      _acceptablePrice: 0,
       _executionFee: '',
       _referralCode: '',
       _callbackTarget: '',

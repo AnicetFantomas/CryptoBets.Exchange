@@ -2,16 +2,14 @@ import React, { useState } from 'react';
 import Tokens from './data';
 
 const Trading = (props: any) => {
-
-    const [chooseLong, setChooseLong] = useState(false);
+    const { chooseLong, onChooseLong } = props;
 
     const handleChooseLong = () => {
-        setChooseLong(true);
-        setChooseLong(!chooseLong);   
+        onChooseLong(true);
     }
 
     const handleChooseShort = () => {
-        setChooseLong(!chooseLong);
+        onChooseLong(false);
     }
 
     return (
@@ -34,7 +32,10 @@ const Trading = (props: any) => {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" />
                     </svg>
                 </button>
-        
+                    {
+                        chooseLong ?
+                        <h1>true</h1> : <h1>false</h1>
+                    }
                 <button style={{ backgroundColor: chooseLong ? '' : 'transparent' }} onClick={handleChooseShort} className='flex items-center justify-center w-1/2 p-3 text-sm font-extrabold text-white bg-red-500 rounded-lg short-btn'>
                     <span>SHORT</span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
