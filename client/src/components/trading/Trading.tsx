@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import Tokens from './data';
 
 const Trading = (props: any) => {
-
-    const [chooseLong, setChooseLong] = useState(false);
+    const { chooseLong, onChooseLong } = props;
 
     const handleChooseLong = () => {
-        setChooseLong(true);
-        setChooseLong(!chooseLong);   
+        onChooseLong(true);
     }
 
     const handleChooseShort = () => {
-        setChooseLong(!chooseLong);
+        onChooseLong(false);
     }
 
     return (
