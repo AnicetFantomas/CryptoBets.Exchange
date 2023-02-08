@@ -67,7 +67,7 @@ const LevDetails = (props: any) => {
         _minOut: Config.MIN_OUT,
         _sizeDelta: props.result * (10 ** 6),
         _isLong: props.chooseLong ? true : false,
-        _acceptablePrice: `${utils.parseUnits(props.tokenPrice)}`,
+        _acceptablePrice: `${utils.parseUnits(props.tokenPriceUsd)}`,
         _executionFee: Config.EXECUTION_FEE,
         _referralCode: Config.REFERRAL_CODE,
         _callbackTarget: Config.CALLBACK_TARGET,

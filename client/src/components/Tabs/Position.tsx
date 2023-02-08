@@ -70,7 +70,7 @@ const Orders = (props: any) => {
                         {position.sizeDelta}
                       </td>
                       <td className="pl-8 whitespace-nowrap">
-                        {position.acceptablePrice * Math.pow(10, -40)}
+                       $ {(position.acceptablePrice * Math.pow(10, -18)).toFixed(2)}
                       </td>
                       <td className="pl-8 ">
                         <button
