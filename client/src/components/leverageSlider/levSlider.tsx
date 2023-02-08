@@ -3,6 +3,7 @@ import LevDetails from './LevDetails';
 import SliderBox from './SliderBox';
 import Trading from '../trading/Trading';
 import Tokens from '../trading/data';
+import { ethers } from 'ethers';
 
 const LevSlider = (props:any) => {
 
@@ -12,6 +13,7 @@ const LevSlider = (props:any) => {
     const [inputValue, setInputValue] = useState(0);
     const [result, setResult] = useState(0);
     const [selectedAddress, setSelectedAddress] = useState("");
+    const [usdPerEth, setUsdPerEth] = useState(1000);
 
     // try get price value
 
@@ -32,9 +34,24 @@ const LevSlider = (props:any) => {
     }
     const tokenPrice: any = getValueFromKey(apiData, selectedAddress);
 
-    const tokenPriceUsd = tokenPrice * Math.pow(10, -30);
+    let tokenPriceUsd: any = 0;
 
-    // console.log(tokenPriceUsd)
+    if (tokenPrice) {
+        const tokenPriceInEth: any = ethers.utils.parseEther(tokenPrice);
+        const tokenUsd: any = ethers.utils.formatEther(tokenPriceInEth);
+        
+        if (selectedAddress === '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1' || 
+            selectedAddress === '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f') 
+            {  
+            const tokenToUsd = ((tokenUsd * usdPerEth) * Math.pow(10, -33)).toFixed(2);     
+            tokenPriceUsd = (tokenToUsd.slice(0, tokenToUsd.indexOf('0') + 7));
+        }
+
+        else {
+            const tokenToUsd : any = ((tokenUsd * usdPerEth) * Math.pow(10, -33)).toFixed(2);
+            tokenPriceUsd = (tokenToUsd.slice(0, tokenToUsd.indexOf('0') + 20));
+        }
+    }
 
 
     // end try get value
