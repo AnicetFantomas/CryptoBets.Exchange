@@ -6,10 +6,12 @@ const Trading = (props: any) => {
 
     const handleChooseLong = () => {
         onChooseLong(true);
+        toast.success('Your order has been longed !')
     }
 
     const handleChooseShort = () => {
         onChooseLong(false);
+        toast.success('Your order has been shorted !')
     }
 
     return (
