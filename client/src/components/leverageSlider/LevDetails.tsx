@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Axios from 'axios'
 import AppModal from '../GlobalModal/AppModal'
 import ConfirmBet from './ConfirmPosition'
-// import { utils } from 'ethers'
 import { Box } from '@mui/material'
 import { Config } from '../../config/config'
 import { utils } from 'ethers'
@@ -16,6 +15,9 @@ const LevDetails = (props: any) => {
   const [tokenMarket, setTokenMarket] = useState([])
 
 
+  console.log("Props ", props)
+
+
   // state to handle data submited
   const [data, setData] = useState(
     {
@@ -25,7 +27,7 @@ const LevDetails = (props: any) => {
       _minOut: 0,
       _sizeDelta: 0,
       _isLong: true,
-      _acceptablePrice: '',
+      _acceptablePrice: 0,
       _executionFee: '',
       _referralCode: '',
       _callbackTarget: '',
@@ -64,7 +66,7 @@ const LevDetails = (props: any) => {
         _minOut: Config.MIN_OUT,
         _sizeDelta: props.result * (10 ** 6),
         _isLong: props.chooseLong ? true : false,
-        _acceptablePrice: `${utils.parseUnits(props.tokenPrice)}`,
+        _acceptablePrice: `${utils.parseUnits(props.tokenPriceUsd)}`,
         _executionFee: Config.EXECUTION_FEE,
         _referralCode: Config.REFERRAL_CODE,
         _callbackTarget: Config.CALLBACK_TARGET,
