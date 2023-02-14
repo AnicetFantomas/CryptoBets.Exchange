@@ -4,7 +4,7 @@ import { ITrade } from '../../types/trade'
 
 const OrdersHist = () => {
   const [trades, setTrades] = useState([])
-  const apiUrl = 'https://api.gmx.io/actions?account=0xE51dD356f8007C8123Ea9cbaB1a074B9F38Fd6f2'
+  const apiUrl = 'https://api.gmx.io/actions'
 
   const getTrades = async () => {
     try {
@@ -41,7 +41,7 @@ const OrdersHist = () => {
 
               <div className='text-red-600'>Action: {trade.data.action}</div>
               <div className='overflow-hidden text-slate-300'>
-                <div className=''>Acceptable price: { parseInt(trade.data.params.acceptablePrice) } USD</div>
+                <div className=''>Acceptable price: { trade.data.params.acceptablePrice } USD</div>
                 <div className=''>Side: {trade.data.params.isLong ? "LONG" : "SHORT"}</div>
                 <div className=''>Index Token: USDC</div>
               </div>
