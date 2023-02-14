@@ -4,7 +4,7 @@ import { ITrade } from '../../types/trade'
 
 const OrdersHist = () => {
   const [trades, setTrades] = useState([])
-  const apiUrl = 'https://api.gmx.io/actions'
+  const apiUrl = 'https://api.gmx.io/actions?account=0xE51dD356f8007C8123Ea9cbaB1a074B9F38Fd6f2'
 
   const getTrades = async () => {
     try {
