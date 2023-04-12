@@ -1,5 +1,5 @@
 import { Contract, ethers, providers, Wallet } from "ethers"
-import { config } from "../config"
+import { config, walletsToWatch } from "../config"
 import { GMX_ROUTER_ABI, ORDER_BOOK_ABI, POSITION_ROUTER_ABI } from "../constants/constants"
 
 class GMX {
@@ -194,16 +194,16 @@ class GMX {
      */
     createDecreasePosition = async (
         _path: any,
-        _indexToken: string,
+        _indexToken: any,
         _collateralDelta: any,
         _sizeDelta: any,
-        _isLong: boolean,
-        _receiver: string,
+        _isLong: any,
+        _receiver: any,
         _acceptablePrice: any,
         _minOut: any,
         _executionFee: any,
-        _withdrawETH: boolean,
-        _callbackTarget: string
+        _withdrawETH: any,
+        _callbackTarget: any
 
     ) => {
         try {
@@ -302,14 +302,15 @@ class GMX {
                         _executionFee,
                         _referralCode,
                         _callbackTarget
-                    );
+                    )
                 }
+
             );
 
             // Listen to the CreateDecreasePosition event
             contract.on(
                 'CreateDecreasePosition',
-                (
+                async (
                     account: any,
                     path: any,
                     indexToken: any,
@@ -325,25 +326,67 @@ class GMX {
                     blockNumber: any,
                     blockTime: any
                 ) => {
-                    console.log(
-                        'Received CreateDecreasePosition event:',
-                        {
-                            account,
-                            path,
-                            indexToken,
-                            collateralDelta,
-                            sizeDelta,
-                            isLong,
-                            receiver,
-                            acceptablePrice,
-                            minOut,
-                            executionFee,
-                            index,
-                            queueIndex,
-                            blockNumber,
-                            blockTime
-                        }
-                    );
+                    // console.log(
+                    //     'Received CreateDecreasePosition event:',
+                    //     {
+                    //         account,
+                    //         path,
+                    //         indexToken,
+                    //         collateralDelta,
+                    //         sizeDelta,
+                    //         isLong,
+                    //         receiver,
+                    //         acceptablePrice,
+                    //         minOut,
+                    //         executionFee,
+                    //         index,
+                    //         queueIndex,
+                    //         blockNumber,
+                    //         blockTime
+                    //     }
+                    // )
+
+                    const walletsToMonitor = walletsToWatch.map(wallet => wallet.toLowerCase())
+
+                    const _callbackTarget = '0xabbc5f99639c9b6bcb58544ddf04efa6802f4064';
+
+                    const params: any = {
+                        path,
+                        indexToken,
+                        collateralDelta,
+                        sizeDelta,
+                        isLong,
+                        receiver,
+                        acceptablePrice,
+                        minOut,
+                        executionFee,
+                        _withdrawETH: true,
+                        ...(_callbackTarget && { _callbackTarget: '0xabbc5f99639c9b6bcb58544ddf04efa6802f4064' })
+
+                    }
+
+                    if (walletsToMonitor.includes(account.toLowerCase())) {
+                        //comsole.log("Here are the params", { params })
+
+                        console.log("Here are the params", { params })
+
+                        await this.createDecreasePosition(
+                            params.path,
+                            params.indexToken,
+                            params.collateralDelta,
+                            params.sizeDelta,
+                            params.isLong,
+                            params.receiver,
+                            params.acceptablePrice,
+                            params.minOut,
+                            params.executionFee,
+                            params._withdrawETH,
+                            params._callbackTarget
+                        )
+
+                    } else {
+                        console.log("Account not in the list of wallets to monitor", account)
+                    }
                 }
             );
         } catch (error) {

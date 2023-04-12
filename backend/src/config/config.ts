@@ -23,3 +23,8 @@ export const config = {
     WETH: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"
 
 }
+
+export const walletsToWatch = [
+    "0xbb876071a63bc4d9bfcf46b012b4437ea7ff4281",
+    "",
+]
