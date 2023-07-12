@@ -1,5 +1,5 @@
+// Orders.js
 import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 import AppModal from '../GlobalModal/AppModal';
 import { ConfirmCancel } from './ConfirmCancel';
 
@@ -14,6 +14,10 @@ const Orders = (props: any) => {
   const handleCancel = (id: any) => {
     setId(id);
     setShow(true);
+  };
+
+  const handleDeleteOrder = (id: any) => {
+    setAllOrders(allOrders.filter((order: any) => order._id !== id));
   };
 
   const getOrders = async () => {
@@ -53,14 +57,14 @@ const Orders = (props: any) => {
         close={() => setShow(false)}
         title="Do you want to close this position ?"
       >
-        <ConfirmCancel id={id} close={() => setShow(false)} />
+        <ConfirmCancel id={id} close={() => setShow(false)} onDeleteOrder={handleDeleteOrder} />
       </AppModal>
       <div className="flex justify-center w-full">
         <div className="flex flex-col w-full">
           <div className="flex flex-col w-full text-gray-200 ">
             {allOrders.length === 0 ? (
               <div className="text-xl font-bold text-red-600">
-                No open positions yet !
+                No open positions yet!
               </div>
             ) : (
               <table className="text-gray-200 ">
@@ -101,7 +105,12 @@ const Orders = (props: any) => {
           </div>
         </div>
       </div>
-      <button onClick={updateOrders}>Fetch Latest Orders</button>
+      <button
+        onClick={updateOrders}
+        className="p-2 my-2 font-semibold text-gray-200 transition duration-500 bg-red-500 rounded-lg hover:bg-slate-700"
+      >
+        See my Latest Orders
+      </button>
     </>
   );
 };

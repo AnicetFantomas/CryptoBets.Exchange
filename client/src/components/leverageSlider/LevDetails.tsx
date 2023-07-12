@@ -30,9 +30,9 @@ const LevDetails = (props: any) => {
     }
   };
 
-  // useEffect(() => {
-  //   getMarketsPrices();
-  // }, []);
+  useEffect(() => {
+    getMarketsPrices();
+  }, []);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -65,6 +65,9 @@ const LevDetails = (props: any) => {
       });
 
       setShow(false);
+
+      // Call the updateOrders function to fetch the latest orders
+      props.updateOrders(); // assuming you pass the updateOrders function as a prop to LevDetails component
     } catch (error) {
       console.error(error);
     }
@@ -75,19 +78,23 @@ const LevDetails = (props: any) => {
       // Perform any necessary actions with the updated order data
       console.log('Updated order data:', data);
     }
-    getMarketsPrices();
   }, [data]);
 
   return (
     <>
       <Box>
-        <AppModal show={show} close={() => setShow(false)} title="Create position">
+        <AppModal
+          show={show}
+          close={() => setShow(false)}
+          title="Create position"
+        >
           <ConfirmBet
             result={props.result}
             inputValue={props.inputValue}
             tokenPriceUsd={props.tokenPriceUsd}
             handleSubmit={handleSubmit}
             close={() => setShow(false)}
+            updateOrders={props.updateOrders} // pass the updateOrders function as a prop
           />
         </AppModal>
         <div className="flex flex-col w-full ">
