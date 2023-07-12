@@ -1,37 +1,50 @@
-import React, { useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
-import AppModal from '../GlobalModal/AppModal'
-import { ConfirmCancel } from './ConfirmCancel'
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import AppModal from '../GlobalModal/AppModal';
+import { ConfirmCancel } from './ConfirmCancel';
 
 const Orders = (props: any) => {
-  const [show, setShow] = useState(false)
-  const [id, setId] = useState(0)
+  const [show, setShow] = useState(false);
+  const [id, setId] = useState(0);
   const [allOrders, setAllOrders] = useState([]);
+  const [shouldFetchOrders, setShouldFetchOrders] = useState(false);
 
-  const getUrl = 'http://localhost:3002/api/orders'
+  const getUrl = 'http://localhost:3002/api/orders';
 
   const handleCancel = (id: any) => {
-    setId(id)
-    setShow(true)
-  }
+    setId(id);
+    setShow(true);
+  };
 
   const getOrders = async () => {
     try {
-      const response = await fetch(getUrl)
-      const data = await (await response).json()
-      setAllOrders(data)
+      const response = await fetch(getUrl);
+      const data = await response.json();
+      setAllOrders(data);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-
-    
-  }
-
-  console.log(allOrders);
+  };
 
   useEffect(() => {
-    getOrders()
+    if (shouldFetchOrders) {
+      getOrders();
+      setShouldFetchOrders(false);
+    }
+  }, [shouldFetchOrders]);
+
+  useEffect(() => {
+    getOrders();
   }, []);
+
+  useEffect(() => {
+    // Perform any necessary actions with the updated orders
+    console.log('Updated orders:', allOrders);
+  }, [allOrders]);
+
+  const updateOrders = () => {
+    setShouldFetchOrders(true);
+  };
 
   return (
     <>
@@ -70,7 +83,7 @@ const Orders = (props: any) => {
                         {position.sizeDelta}
                       </td>
                       <td className="pl-8 whitespace-nowrap">
-                       $ {(position.acceptablePrice * Math.pow(10, -18)).toFixed(2)}
+                        $ {(position.acceptablePrice * Math.pow(10, -18)).toFixed(2)}
                       </td>
                       <td className="pl-8 ">
                         <button
@@ -88,8 +101,9 @@ const Orders = (props: any) => {
           </div>
         </div>
       </div>
+      <button onClick={updateOrders}>Fetch Latest Orders</button>
     </>
-  )
-}
+  );
+};
 
-export default Orders
+export default Orders;
