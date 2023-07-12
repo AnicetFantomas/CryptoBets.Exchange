@@ -1,106 +1,84 @@
-import React, { useEffect, useState } from 'react'
-import Axios from 'axios'
-import AppModal from '../GlobalModal/AppModal'
-import ConfirmBet from './ConfirmPosition'
-import { Box } from '@mui/material'
-import { Config } from '../../config/config'
-import { utils } from 'ethers'
-import TabsLayout from '../Tabs/TabsLayout'
-import { toast } from 'react-toastify'
+import React, { useEffect, useState } from 'react';
+import Axios from 'axios';
+import AppModal from '../GlobalModal/AppModal';
+import ConfirmBet from './ConfirmPosition';
+import { Box } from '@mui/material';
+import { Config } from '../../config/config';
+import { utils } from 'ethers';
+import TabsLayout from '../Tabs/TabsLayout';
+import { toast } from 'react-toastify';
 
-export const url = 'http://localhost:3002/api/long'
+export const url = 'http://localhost:3002/api/long';
 
 const LevDetails = (props: any) => {
-  const [show, setShow] = useState(false)
-  const [tokenMarket, setTokenMarket] = useState([])
-
-
-  console.log("Props ", props)
-
-
-  // state to handle data submited
-  const [data, setData] = useState(
-    {
-      _path: [''],
-      _indexToken: '',
-      _amountIn: '',
-      _minOut: 0,
-      _sizeDelta: 0,
-      _isLong: true,
-      _acceptablePrice: 0,
-      _executionFee: '',
-      _referralCode: '',
-      _callbackTarget: '',
-    },
-  )
+  const [show, setShow] = useState(false);
+  const [tokenMarket, setTokenMarket] = useState([]);
+  const [data, setData] = useState(null);
 
   const handleBet = async () => {
-    setShow(true)
-  }
+    setShow(true);
+  };
 
   const getMarketsPrices = async () => {
     try {
-      const response = fetch('https://api.gmx.io/prices')
-      const data = await (await response).json()
+      const response = await fetch('https://api.gmx.io/prices');
+      const data = await response.json();
 
-      setTokenMarket(data)
+      setTokenMarket(data);
     } catch (error) {
-      console.error(onmessage)
+      console.error(error);
     }
-  }
+  };
 
   useEffect(() => {
-    getMarketsPrices()
-  }, [])
+    getMarketsPrices();
+  }, []);
 
-  const [postData, setPostData] = useState({});
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault()
+    const postData = {
+      _path: [Config.FROM_TOKEN, props.selectedAddress],
+      _indexToken: props.selectedAddress,
+      _amountIn: utils.parseUnits(String(props.inputValue), 6).toString(),
+      _minOut: Config.MIN_OUT,
+      _sizeDelta: props.result * (10 ** 6),
+      _isLong: props.chooseLong ? true : false,
+      _acceptablePrice: utils.parseUnits(props.tokenPriceUsd).toString(),
+      _executionFee: Config.EXECUTION_FEE,
+      _referralCode: Config.REFERRAL_CODE,
+      _callbackTarget: Config.CALLBACK_TARGET,
+    };
 
-    setPostData(
-      {
-        _path: [Config.FROM_TOKEN, `${props.selectedAddress}`],
-        _indexToken: `${props.selectedAddress}`,
-        _amountIn: `${utils.parseUnits(props.inputValue, 6)}`,
-        _minOut: Config.MIN_OUT,
-        _sizeDelta: props.result * (10 ** 6),
-        _isLong: props.chooseLong ? true : false,
-        _acceptablePrice: `${utils.parseUnits(props.tokenPriceUsd)}`,
-        _executionFee: Config.EXECUTION_FEE,
-        _referralCode: Config.REFERRAL_CODE,
-        _callbackTarget: Config.CALLBACK_TARGET,
-      }
-    )
+    try {
+      const response = await Axios.post(url, postData);
+      const responseData = response.data;
+      console.log(responseData);
 
-    const resolveAfter3Sec = new Promise(resolve => setTimeout(resolve, 3000));
-    toast.promise(
-      resolveAfter3Sec,
-      {
+      setData({ postData, ...responseData });
+
+      const resolveAfter3Sec = new Promise((resolve) => setTimeout(resolve, 3000));
+      toast.promise(resolveAfter3Sec, {
         pending: 'Your order is being placed!',
         success: 'Your order has been placed successfully! 👌',
-        error: 'Unable to place order 🤯'
-      }
-    )
+        error: 'Unable to place order 🤯',
+      });
 
-    setShow(false)
-  }
+      setShow(false);
+
+      // Call the updateOrders function to fetch the latest orders
+      props.updateOrders(); // assuming you pass the updateOrders function as a prop to LevDetails component
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    if (Object.keys(postData).length) {
-      Axios.post(url, postData)
-        .then(async (res) => {
-          console.log(res.data);
-          setData({ postData, ...res.data });
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+    if (data) {
+      // Perform any necessary actions with the updated order data
+      console.log('Updated order data:', data);
     }
-  }, [postData]);
-
-
-  console.log(data);
+  }, [data]);
 
   return (
     <>
@@ -116,6 +94,7 @@ const LevDetails = (props: any) => {
             tokenPriceUsd={props.tokenPriceUsd}
             handleSubmit={handleSubmit}
             close={() => setShow(false)}
+            updateOrders={props.updateOrders} // pass the updateOrders function as a prop
           />
         </AppModal>
         <div className="flex flex-col w-full ">
@@ -144,7 +123,7 @@ const LevDetails = (props: any) => {
       </Box>
       <TabsLayout data={data} />
     </>
-  )
-}
+  );
+};
 
-export default LevDetails
+export default LevDetails;

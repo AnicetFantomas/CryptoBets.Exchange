@@ -1,37 +1,54 @@
-import React, { useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
-import AppModal from '../GlobalModal/AppModal'
-import { ConfirmCancel } from './ConfirmCancel'
+// Orders.js
+import React, { useEffect, useState } from 'react';
+import AppModal from '../GlobalModal/AppModal';
+import { ConfirmCancel } from './ConfirmCancel';
 
 const Orders = (props: any) => {
-  const [show, setShow] = useState(false)
-  const [id, setId] = useState(0)
+  const [show, setShow] = useState(false);
+  const [id, setId] = useState(0);
   const [allOrders, setAllOrders] = useState([]);
+  const [shouldFetchOrders, setShouldFetchOrders] = useState(false);
 
-  const getUrl = 'http://localhost:3002/api/orders'
+  const getUrl = 'http://localhost:3002/api/orders';
 
   const handleCancel = (id: any) => {
-    setId(id)
-    setShow(true)
-  }
+    setId(id);
+    setShow(true);
+  };
+
+  const handleDeleteOrder = (id: any) => {
+    setAllOrders(allOrders.filter((order: any) => order._id !== id));
+  };
 
   const getOrders = async () => {
     try {
-      const response = await fetch(getUrl)
-      const data = await (await response).json()
-      setAllOrders(data)
+      const response = await fetch(getUrl);
+      const data = await response.json();
+      setAllOrders(data);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-
-    
-  }
-
-  console.log(allOrders);
+  };
 
   useEffect(() => {
-    getOrders()
+    if (shouldFetchOrders) {
+      getOrders();
+      setShouldFetchOrders(false);
+    }
+  }, [shouldFetchOrders]);
+
+  useEffect(() => {
+    getOrders();
   }, []);
+
+  useEffect(() => {
+    // Perform any necessary actions with the updated orders
+    console.log('Updated orders:', allOrders);
+  }, [allOrders]);
+
+  const updateOrders = () => {
+    setShouldFetchOrders(true);
+  };
 
   return (
     <>
@@ -40,14 +57,14 @@ const Orders = (props: any) => {
         close={() => setShow(false)}
         title="Do you want to close this position ?"
       >
-        <ConfirmCancel id={id} close={() => setShow(false)} />
+        <ConfirmCancel id={id} close={() => setShow(false)} onDeleteOrder={handleDeleteOrder} />
       </AppModal>
       <div className="flex justify-center w-full">
         <div className="flex flex-col w-full">
           <div className="flex flex-col w-full text-gray-200 ">
             {allOrders.length === 0 ? (
               <div className="text-xl font-bold text-red-600">
-                No open positions yet !
+                No open positions yet!
               </div>
             ) : (
               <table className="text-gray-200 ">
@@ -70,7 +87,7 @@ const Orders = (props: any) => {
                         {position.sizeDelta}
                       </td>
                       <td className="pl-8 whitespace-nowrap">
-                       $ {(position.acceptablePrice * Math.pow(10, -18)).toFixed(2)}
+                        $ {(position.acceptablePrice * Math.pow(10, -18)).toFixed(2)}
                       </td>
                       <td className="pl-8 ">
                         <button
@@ -88,8 +105,14 @@ const Orders = (props: any) => {
           </div>
         </div>
       </div>
+      <button
+        onClick={updateOrders}
+        className="p-2 my-2 font-semibold text-gray-200 transition duration-500 bg-red-500 rounded-lg hover:bg-slate-700"
+      >
+        See my Latest Orders
+      </button>
     </>
-  )
-}
+  );
+};
 
-export default Orders
+export default Orders;

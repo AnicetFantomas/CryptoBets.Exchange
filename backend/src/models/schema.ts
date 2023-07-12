@@ -1,5 +1,8 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 import { IOrder } from "../types/interface";
+
+mongoose.set('strictQuery', false);
+
 
 const OrderSchema = new Schema<IOrder>(
     {
