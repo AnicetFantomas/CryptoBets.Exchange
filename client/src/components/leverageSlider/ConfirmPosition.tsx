@@ -28,13 +28,13 @@ const ConfirmBet = (props: any) => {
       <div className='flex w-full space-x-2'>
         <button
           onClick={props.handleSubmit }
-          className='flex items-center justify-center flex-auto p-2 space-x-1 bg-sky-500'
+          className='flex items-center justify-center flex-auto p-2 space-x-1 bg-gradient-to-r from-cyan-500 to-blue-500'
         >
           ADD POSITION
         </button>
         <button
           onClick={props.close}
-          className='flex items-center justify-center flex-auto p-2 space-x-1 bg-red-500'
+          className='flex items-center justify-center flex-auto p-2 space-x-1 bg-gradient-to-r from-pink-500 to-yellow-500'
         >
           CANCEL
         </button>

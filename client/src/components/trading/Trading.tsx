@@ -17,7 +17,7 @@ const Trading = (props: any) => {
     return (
         <div className='flex flex-col w-full p-2 pt-4 space-y-4'>
             <div className="flex justify-center w-full mb-4 space-x-6">
-                <select className='block w-2/5 px-4 text-xs leading-tight text-white cursor-pointer bg-cyan-600 focus:outline-none' onChange={e => props.handleSelectedSymbol(e.target.value)}>
+                <select id="selectOptions" className='block w-2/5 px-4 text-xs leading-tight text-white cursor-pointer bg-cyan-600 focus:outline-none' onChange={e => props.handleSelectedSymbol(e.target.value)}>
                 <option value="value1" disabled selected>Choose Token </option>
                 {Tokens.map((token: any) => (<option key={token.symbol} value={token.symbol}>
                         {`USDC`} / {token.symbol}

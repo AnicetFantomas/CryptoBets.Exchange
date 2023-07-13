@@ -114,7 +114,7 @@ const LevDetails = (props: any) => {
           </div>
           <button
             onClick={handleBet}
-            className="p-3 my-5 text-xl text-white rounded-md bg-sky-500"
+            className="p-3 my-5 text-xl text-white rounded-md bg-gradient-to-r from-cyan-500 to-blue-500"
             type="submit"
           >
             Place Order

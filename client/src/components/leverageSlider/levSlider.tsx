@@ -95,7 +95,7 @@ const LevSlider = (props:any) => {
             chooseLong={chooseLong}
             onChooseLong={setChooseLong}
           />
-          <div className="flex flex-col m-5 ">
+          <div className="flex flex-col m-5" >
             <h2 className="self-start my-5 text-white">Leverage</h2>
             <div className="flex self-center ml-3">
               <div className="flex flex-col items-center mr-5 cursor-pointer hover:text-blue-200">
