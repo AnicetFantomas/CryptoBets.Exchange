@@ -6,8 +6,8 @@ const Navbar = () => {
 
     return (
               
-        <div className="relative flex mb-5 shadow-2xl jubstify-between nav filter: blur(8px)">
-            <div className="flex">
+        <div className=" flex mb-5 shadow-2xl jubstify-between nav bg-[f3f3f3 ]">
+            <div className="relative flex ">
                 <svg xmlns="http://www.w3.org/2000/svg" 
                 fill="#FFFFFF" 
                 viewBox="0 0 30 30" 
