@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import Axios from 'axios';
-import AppModal from '../GlobalModal/AppModal';
-import ConfirmBet from './ConfirmPosition';
-import { Box } from '@mui/material';
-import { Config } from '../../config/config';
-import { utils } from 'ethers';
-import TabsLayout from '../Tabs/TabsLayout';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from "react";
+import Axios from "axios";
+import AppModal from "../GlobalModal/AppModal";
+import ConfirmBet from "./ConfirmPosition";
+import { Box } from "@mui/material";
+import { Config } from "../../config/config";
+import { utils } from "ethers";
+import TabsLayout from "../Tabs/TabsLayout";
+import { toast } from "react-toastify";
 
-export const url = 'http://localhost:3002/api/long';
+export const url = "http://localhost:3002/api/long";
 
 const LevDetails = (props: any) => {
   const [show, setShow] = useState(false);
@@ -16,15 +16,12 @@ const LevDetails = (props: any) => {
   const [data, setData] = useState(null);
 
   const handleBet = async () => {
-    if (!props.selectedAddress || props.inputValue === 0) {
-      toast.error('Please select an address and enter a valid input value.');
-      return;
-    }
+    setShow(true);
   };
 
   const getMarketsPrices = async () => {
     try {
-      const response = await fetch('https://api.gmx.io/prices');
+      const response = await fetch("https://api.gmx.io/prices");
       const data = await response.json();
 
       setTokenMarket(data);
@@ -45,7 +42,7 @@ const LevDetails = (props: any) => {
       _indexToken: props.selectedAddress,
       _amountIn: utils.parseUnits(String(props.inputValue), 6).toString(),
       _minOut: Config.MIN_OUT,
-      _sizeDelta: props.result * (10 ** 6),
+      _sizeDelta: props.result * 10 ** 6,
       _isLong: props.chooseLong ? true : false,
       _acceptablePrice: utils.parseUnits(props.tokenPriceUsd).toString(),
       _executionFee: Config.EXECUTION_FEE,
@@ -53,35 +50,35 @@ const LevDetails = (props: any) => {
       _callbackTarget: Config.CALLBACK_TARGET,
     };
 
-    
-      try {
-        const response = await Axios.post(url, postData);
-        const responseData = response.data;
-        console.log(responseData);
-  
-        setData({ postData, ...responseData });
-  
-        const resolveAfter3Sec = new Promise((resolve) => setTimeout(resolve, 3000));
-        toast.promise(resolveAfter3Sec, {
-          pending: 'Your order is being placed!',
-          success: 'Your order has been placed successfully! 👌',
-          error: 'Unable to place order 🤯',
-        });
-  
-        setShow(false);
-  
-        // Call the updateOrders function to fetch the latest orders
-        props.updateOrders(); // assuming you pass the updateOrders function as a prop to LevDetails component
-      } catch (error) {
-        console.error(error);
-      }
-    
+    try {
+      const response = await Axios.post(url, postData);
+      const responseData = response.data;
+      console.log(responseData);
+
+      setData({ postData, ...responseData });
+
+      const resolveAfter3Sec = new Promise((resolve) =>
+        setTimeout(resolve, 3000)
+      );
+      toast.promise(resolveAfter3Sec, {
+        pending: "Your order is being placed!",
+        success: "Your order has been placed successfully! 👌",
+        error: "Unable to place order 🤯",
+      });
+
+      setShow(false);
+
+      // Call the updateOrders function to fetch the latest orders
+      props.updateOrders(); // assuming you pass the updateOrders function as a prop to LevDetails component
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
     if (data) {
       // Perform any necessary actions with the updated order data
-      console.log('Updated order data:', data);
+      console.log("Updated order data:", data);
     }
   }, [data]);
 
@@ -93,26 +90,18 @@ const LevDetails = (props: any) => {
           close={() => setShow(false)}
           title="Create position"
         >
-          {
-            props.selectedAddress && props.inputValue !== 0 ? (
-              <ConfirmBet
-            result={props.result}
-            inputValue={props.inputValue}
-            tokenPriceUsd={props.tokenPriceUsd}
-            handleSubmit={handleSubmit}
-            close={() => setShow(false)}
-            updateOrders={props.updateOrders} // pass the updateOrders function as a prop
-          />
-            ) : <p>Please select an address</p>
-          }
-          <ConfirmBet
-            result={props.result}
-            inputValue={props.inputValue}
-            tokenPriceUsd={props.tokenPriceUsd}
-            handleSubmit={handleSubmit}
-            close={() => setShow(false)}
-            updateOrders={props.updateOrders} // pass the updateOrders function as a prop
-          />
+          {props.selectedAddress && props.inputValue !== 0 ? (
+            <ConfirmBet
+              result={props.result}
+              inputValue={props.inputValue}
+              tokenPriceUsd={props.tokenPriceUsd}
+              handleSubmit={handleSubmit}
+              close={() => setShow(false)}
+              updateOrders={props.updateOrders} // pass the updateOrders function as a prop
+            />
+          ) : (
+            <p className="text-red-500">Please select a token or enter an amount </p>
+          )}
         </AppModal>
         <div className="flex flex-col w-full ">
           <div>
@@ -129,7 +118,7 @@ const LevDetails = (props: any) => {
               <span className="text-sky-500">$ {props.result}</span>
             </div>
           </div>
-      
+
           <button
             onClick={handleBet}
             className="p-3 my-5 text-xl text-white rounded-md bg-gradient-to-r from-cyan-500 to-blue-500"
