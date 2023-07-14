@@ -32,7 +32,7 @@ const App = () => {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-      <div className='fixed w-full bg-black'>
+      <div className='fixed w-full bg-black navbar'>
           <Navbar />
         </div>
         <Layout />

@@ -45,7 +45,7 @@ const Trading = (props: any) => {
                 <div className='flex items-center w-full py-1 mt-8 space-x-2 text-white border-b'>
                     <span className='text-gray-400'>Amount:</span>
                     <div className='flex justify-end flex-auto space-x-1'>
-                        <input onChange={props.handleInputChange} value={props.inputValue} required={true} min={5} className='w-full text-white bg-transparent border-none focus:outline-none' type="number" />
+                        <input onChange={props.handleInputChange} value={props.inputValue} minLength={10} className='w-full text-white bg-transparent border-none focus:outline-none' type="number" />
                         <span className='mb-2 text-sm text-gray-400'>{`(usd)`}</span>
                     </div>
                 </div>

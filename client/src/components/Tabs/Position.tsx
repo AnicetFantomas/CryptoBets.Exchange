@@ -107,7 +107,7 @@ const Orders = (props: any) => {
       </div>
       <button
         onClick={updateOrders}
-        className="p-2 my-2 font-semibold text-gray-200 transition duration-500 bg-red-500 rounded-lg hover:bg-slate-700"
+        className="p-2 my-2 font-semibold text-gray-200 transition duration-500 rounded-lg bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 hover:bg-slate-700"
       >
         See my Latest Orders
       </button>
