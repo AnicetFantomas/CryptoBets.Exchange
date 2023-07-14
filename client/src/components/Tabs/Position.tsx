@@ -67,7 +67,7 @@ const Orders = (props: any) => {
                 No open positions yet!
               </div>
             ) : (
-              <table className="text-gray-200 ">
+              <table className="p-0 mb-5 text-gray-200">
                 <tbody>
                   <tr className="mb-6 font-bold text-center ">
                     <td className=" whitespace-nowrap">Position</td>

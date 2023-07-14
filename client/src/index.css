@@ -55,5 +55,12 @@
 }
 
 tr:nth-child(even) {
-  background-color: rgba(207, 202, 202, 0.055);
+  background-color: rgba(207, 202, 202, 0.063);
+}
+
+#tradeContainer {
+  background-color: rgba(201, 187, 187, 0.036);
+  font-size: 12px;
+  border-radius: 20px;
+  border: 2px solid #fdf2f212;
 }

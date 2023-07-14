@@ -37,8 +37,8 @@ const OrdersHist = () => {
       {
         trades.length === 0 ? <div className='text-xl font-bold text-red-600'><td>No open trades yet !</td></div> :
           trades.map((trade: ITrade) =>
-            <div className='p-3 mb-3 border-2 border-black border-solid' key={trade.id}>
-
+            <div id="tradeContainer" className='p-3 mb-3 ' key={trade.id}>
+              
               <div className='text-red-600'>Action: {trade.data.action}</div>
               <div className='overflow-hidden text-slate-300'>
                 <div className=''>Acceptable price: { trade.data.params.acceptablePrice } USD</div>

@@ -103,7 +103,7 @@ const LevDetails = (props: any) => {
             <p className="text-red-500">Please select a token or enter an amount </p>
           )}
         </AppModal>
-        <div className="flex flex-col w-full ">
+        <div className="flex flex-col w-full orderDetails">
           <div>
             <div className="flex justify-between w-full">
               <span className="text-white">Leverage</span>
