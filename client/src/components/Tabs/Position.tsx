@@ -80,7 +80,7 @@ const Orders = (props: any) => {
                       key={position._id}
                       className="text-gray-500 my-0.5 text-center hover:text-gray-200"
                     >
-                      <td className="whitespace-nowrap ">
+                      <td className="whitespace-nowrap p-[-5px]">
                         {position.amountIn}
                       </td>
                       <td className="pl-8 whitespace-nowrap">

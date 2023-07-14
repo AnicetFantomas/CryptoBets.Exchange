@@ -1,7 +1,7 @@
 import LevSlider from '../components/leverageSlider/levSlider'
 import Navbar from '../components/navbar/Navbar'
 import Charts from '../components/Charts'
-import backgroundImage from '../assets/images/HugeDomains_com.jpeg'
+import backgroundImage from '../assets/images/bg3.jpeg'
 
 
 const Layout = (props: any) => {
