@@ -67,7 +67,7 @@ const Orders = (props: any) => {
                 No open positions yet!
               </div>
             ) : (
-              <table className="p-0 mb-5 text-gray-200">
+              <table className="p-0 mb-5 text-sm text-gray-200">
                 <tbody>
                   <tr className="mb-6 font-bold text-center ">
                     <td className=" whitespace-nowrap">Position</td>
@@ -78,7 +78,7 @@ const Orders = (props: any) => {
                   {allOrders.map((position: any) => (
                     <tr
                       key={position._id}
-                      className="text-gray-500 my-0.5 text-center hover:text-gray-200"
+                      className="text-gray-500 my-0.5 text-sm text-center hover:text-gray-200"
                     >
                       <td className="whitespace-nowrap p-[-5px]">
                         {position.amountIn}
