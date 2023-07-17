@@ -67,7 +67,7 @@ const Orders = (props: any) => {
                 No open positions yet!
               </div>
             ) : (
-              <table className="text-gray-200 ">
+              <table className="p-0 mb-5 text-sm text-gray-200">
                 <tbody>
                   <tr className="mb-6 font-bold text-center ">
                     <td className=" whitespace-nowrap">Position</td>
@@ -78,9 +78,9 @@ const Orders = (props: any) => {
                   {allOrders.map((position: any) => (
                     <tr
                       key={position._id}
-                      className="text-gray-500 my-0.5 text-center hover:text-gray-200"
+                      className="text-gray-500 my-0.5 text-sm text-center hover:text-gray-200"
                     >
-                      <td className="whitespace-nowrap ">
+                      <td className="whitespace-nowrap p-[-5px]">
                         {position.amountIn}
                       </td>
                       <td className="pl-8 whitespace-nowrap">
@@ -107,7 +107,7 @@ const Orders = (props: any) => {
       </div>
       <button
         onClick={updateOrders}
-        className="p-2 my-2 font-semibold text-gray-200 transition duration-500 bg-red-500 rounded-lg hover:bg-slate-700"
+        className="p-2 my-2 font-semibold text-gray-200 transition duration-500 rounded-lg bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 hover:bg-slate-700"
       >
         See my Latest Orders
       </button>
