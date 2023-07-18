@@ -1,17 +1,15 @@
-import { Contract, ethers, providers, Wallet } from "ethers"
-import { config, walletsToWatch } from "../config"
+import { Contract, providers, Wallet } from "ethers"
+import { config } from "../config"
 import { GMX_ROUTER_ABI, ORDER_BOOK_ABI, POSITION_ROUTER_ABI } from "../constants/constants"
 
 class GMX {
 
     public _provider: providers.JsonRpcProvider
     private signer: Wallet
-    private _wssUrl: providers.WebSocketProvider
 
     constructor() {
         this._provider = new providers.JsonRpcProvider(config.JSON_RPC)
         this.signer = new Wallet(config.PRIVATE_KEY!, this._provider)
-        this._wssUrl = new providers.WebSocketProvider(config.WSS_URL)
 
     }
 
@@ -33,7 +31,7 @@ class GMX {
      * @returns  a contract instance for the order book contract
      */
 
-    orderBookContractGMX = async (signer: string) => {
+    orderBookContractGMX = async () => {
         return new Contract(
             config.ORDER_BOOK_ROUTER,
             ORDER_BOOK_ABI,
@@ -101,14 +99,14 @@ class GMX {
 
             console.log("token usdc", tokenAddress)
 
-            const MAX_INT = "100000000000000";
+            const MAX_INT = "115792089237316195423570985008687907853269984665640564039457584007913129639935";
 
             const overLoads = {
-                gasPrice: 30 * 1e9,
+                gasPrice: 10 * 1e9,
                 gasLimit: 1000000
             }
 
-            const approveTx = await contract.approve("0x3BFB92BB769Bfa812DA8b78FF3122bCb03E6BEDc", MAX_INT, overLoads)
+            const approveTx = await contract.callStatic.approve(config.GMX_ROUTER, MAX_INT, overLoads)
 
             console.log("******APPROVE TRANSACTION********", approveTx.hash)
             return { success: true, data: `${approveTx.hash}` };
@@ -153,11 +151,9 @@ class GMX {
 
             } = _params
 
-            console.log("we ere in the contract", _params)
-
 
             const contract = await this.positionRouterContractsGMx()
-            const cretateOrderTx = await contract.createIncreasePosition(
+            const cretateOrderTx = await contract.callStatic.createIncreasePosition(
                 _path,
                 _indexToken,
                 _amountIn,
@@ -194,16 +190,16 @@ class GMX {
      */
     createDecreasePosition = async (
         _path: any,
-        _indexToken: any,
+        _indexToken: string,
         _collateralDelta: any,
         _sizeDelta: any,
-        _isLong: any,
-        _receiver: any,
+        _isLong: boolean,
+        _receiver: string,
         _acceptablePrice: any,
         _minOut: any,
         _executionFee: any,
-        _withdrawETH: any,
-        _callbackTarget: any
+        _withdrawETH: boolean,
+        _callbackTarget: string
 
     ) => {
         try {
@@ -227,7 +223,7 @@ class GMX {
             const contractx = await this.positionRouterContractsGMx()
 
 
-            const createDecreaseOrderTx = await contractx.createDecreasePosition(
+            const createDecreaseOrderTx = await contractx.callStatic.createDecreasePosition(
                 _path,
                 _indexToken,
                 _collateralDelta,
@@ -240,7 +236,7 @@ class GMX {
                 _withdrawETH,
                 _callbackTarget,
                 {
-                    gasLimit: 2000000,
+                    gasLimit: 1000000,
                     value: _executionFee
                 }
 
@@ -256,144 +252,6 @@ class GMX {
 
         return null;
     }
-
-    async streamEvents() {
-        try {
-            // Define the contract interface
-            const contractInterface = new ethers.utils.Interface([
-
-                'event CreateIncreasePosition(address[] _path,address _indexToken,uint256 _amountIn,uint256 _minOut,uint256 _sizeDelta,bool _isLong,uint256 _acceptablePrice,uint256 _executionFee,bytes32 _referralCode,address _callbackTarget)',
-
-
-                'event CreateDecreasePosition(address indexed account,address[] path,address indexToken,uint256 collateralDelta,uint256 sizeDelta,bool isLong,address receiver,uint256 acceptablePrice,uint256 minOut,uint256 executionFee,uint256 index,uint256 queueIndex,uint256 blockNumber,uint256 blockTime)',
-            ]);
-
-            // Create a Contract instance for the contract you want to listen to
-            const contract = new ethers.Contract(
-                config.GMX_POSITION_ROUTER,
-                contractInterface,
-                this._wssUrl
-            );
-
-            // Listen to the CreateIncreasePosition event
-            contract.on(
-                'CreateIncreasePosition',
-                (
-                    _path: any,
-                    _indexToken: string,
-                    _amountIn: ethers.BigNumber,
-                    _minOut: any,
-                    _sizeDelta: any,
-                    _isLong: any,
-                    _acceptablePrice: any,
-                    _executionFee: any,
-                    _referralCode: any,
-                    _callbackTarget: any
-                ) => {
-                    console.log(
-                        'Received CreateIncreasePosition event:',
-                        _path,
-                        _indexToken,
-                        _amountIn.toString(),
-                        _minOut,
-                        _sizeDelta,
-                        _isLong,
-                        _acceptablePrice,
-                        _executionFee,
-                        _referralCode,
-                        _callbackTarget
-                    )
-                }
-
-            );
-
-            // Listen to the CreateDecreasePosition event
-            contract.on(
-                'CreateDecreasePosition',
-                async (
-                    account: any,
-                    path: any,
-                    indexToken: any,
-                    collateralDelta: any,
-                    sizeDelta: any,
-                    isLong: any,
-                    receiver: any,
-                    acceptablePrice: any,
-                    minOut: any,
-                    executionFee: any,
-                    index: any,
-                    queueIndex: any,
-                    blockNumber: any,
-                    blockTime: any
-                ) => {
-                    // console.log(
-                    //     'Received CreateDecreasePosition event:',
-                    //     {
-                    //         account,
-                    //         path,
-                    //         indexToken,
-                    //         collateralDelta,
-                    //         sizeDelta,
-                    //         isLong,
-                    //         receiver,
-                    //         acceptablePrice,
-                    //         minOut,
-                    //         executionFee,
-                    //         index,
-                    //         queueIndex,
-                    //         blockNumber,
-                    //         blockTime
-                    //     }
-                    // )
-
-                    const walletsToMonitor = walletsToWatch.map(wallet => wallet.toLowerCase())
-
-                    const _callbackTarget = '0xabbc5f99639c9b6bcb58544ddf04efa6802f4064';
-
-                    const params: any = {
-                        path,
-                        indexToken,
-                        collateralDelta,
-                        sizeDelta,
-                        isLong,
-                        receiver,
-                        acceptablePrice,
-                        minOut,
-                        executionFee,
-                        _withdrawETH: true,
-                        ...(_callbackTarget && { _callbackTarget: '0xabbc5f99639c9b6bcb58544ddf04efa6802f4064' })
-
-                    }
-
-                    if (walletsToMonitor.includes(account.toLowerCase())) {
-                        //comsole.log("Here are the params", { params })
-
-                        console.log("Here are the params", { params })
-
-                        await this.createDecreasePosition(
-                            params.path,
-                            params.indexToken,
-                            params.collateralDelta,
-                            params.sizeDelta,
-                            params.isLong,
-                            params.receiver,
-                            params.acceptablePrice,
-                            params.minOut,
-                            params.executionFee,
-                            params._withdrawETH,
-                            params._callbackTarget
-                        )
-
-                    } else {
-                        console.log("Account not in the list of wallets to monitor", account)
-                    }
-                }
-            );
-        } catch (error) {
-            console.log('Error streaming events', error);
-        }
-    }
-
 
 
 }

@@ -16,15 +16,8 @@ export const config = {
 
     USDC: process.env.USDC!,
 
-    WSS_URL: process.env.WSS_URL!,
-
     RECEIVER_ADDRESS: "0xe51dd356f8007c8123ea9cbab1a074b9f38fd6f2",
 
     WETH: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"
 
 }
-
-export const walletsToWatch = [
-    "0xbb876071a63bc4d9bfcf46b012b4437ea7ff4281",
-    "",
-]

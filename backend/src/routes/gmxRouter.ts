@@ -1,9 +1,8 @@
 import { utils } from "ethers";
 import * as express from "express";
-import { idText } from "typescript";
 import { config } from "../config";
 import { GmxWrapper } from "../core";
-import "../models/connection";
+import  "../models/connection";
 import { Order } from "../models/schema";
 
 const router = express.Router();
@@ -27,37 +26,38 @@ router.post("/long", async (req: any, res: any) => {
 
         //call the approve function before creating an order to approve the GMX ROUTER
 
-        //const approve = await GmxWrapper.approve(config.USDC)
+        // const approve = await GmxWrapper.approve(config.USDC)
 
 
         // if (approve) {
 
-        //call the  createIncreasePosition and passing the params
+            // call the  createIncreasePosition and passing the params
 
-        const order = await GmxWrapper.createIncreasePosition(_params)
+            // const order = await GmxWrapper.createIncreasePosition(_params)
 
-        if (order) {
+            // if (order) {
 
-            //save the order to the db
-            let orderDetails = new Order({
-                path: req.body._path,
-                amountIn: req.body._amountIn,
-                indexToken: req.body._indexToken,
-                minOut: req.body._minOut,
-                sizeDelta: req.body._sizeDelta,
-                acceptablePrice: req.body._acceptablePrice,
-                executionFee: req.body._executionFee,
-                callbackTarget: req.body._callbackTarget,
-                isLong: req.body._isLong,
-                referralCode: req.body._referralCode
-            })
+                //save the order to the db
+                let orderDetails = new Order({
+                    path: req.body._path,
+                    amountIn: req.body._amountIn,
+                    indexToken: req.body._indexToken,
+                    minOut: req.body._minOut,
+                    sizeDelta: req.body._sizeDelta,
+                    acceptablePrice: req.body._acceptablePrice,
+                    executionFee: req.body._executionFee,
+                    callbackTarget: req.body._callbackTarget,
+                    isLong: req.body._isLong,
+                    referralCode: req.body._referralCode
+                })
 
-            const data = await orderDetails.save()
+                const data = await orderDetails.save()
 
-            res.send({ status: 200, data })
-        }
+                res.send({ status: 200, data })
 
-        //}
+        //     }
+
+        // }
 
     } catch (error) {
         console.log("Error Creating Order Endpoint", error)
@@ -163,77 +163,21 @@ router.get("/orders", async (req: any, res: any) => {
     console.log("active orders", data)
 
     if (data) {
-        res.send(data)
+        res.send( data )
     }
 })
 
 router.delete("/activeOrder/:id", async (req: any, res: any) => {
     try {
-        const id = req.params.id
+        const id  = req.params.id
+        const removeOrder = await Order.findByIdAndDelete({ _id: id })
 
-        let orderDetails: any = await Order.findById({
-            _id: id
-        })
+        if (removeOrder) {
 
+            console.log("order removed", removeOrder)
 
-        const { path, indexToken, minOut, sizeDelta, amountIn, acceptablePrice, executionFee, callbackTarget, isLong } = orderDetails;
-        const receiver = config.RECEIVER_ADDRESS
-        const collateralDelta = 0;
-        const withdrawETH = true
-
-        let _path = path.reverse()
-        _path[1] = config.WETH
-
-        let _acceptablePrice = acceptablePrice
-
-        orderDetails.receiver = receiver
-        orderDetails.collateralDelta = collateralDelta
-        orderDetails.withdrawETH = withdrawETH
-        orderDetails._path = _path
-        orderDetails._acceptablePrice = _acceptablePrice
-
-        console.log({
-            _path,
-            indexToken,
-            collateralDelta,
-            minOut,
-            sizeDelta,
-            _acceptablePrice,
-            executionFee,
-            callbackTarget,
-            isLong,
-            receiver,
-            withdrawETH
-
-        })
-
-        if (orderDetails) {
-            //closes the position
-            const closeOrder = await GmxWrapper.createDecreasePosition(
-                path,
-                indexToken,
-                collateralDelta,
-                amountIn,
-                isLong,
-                receiver,
-                acceptablePrice,
-                minOut,
-                executionFee,
-                withdrawETH,
-                callbackTarget
-            )
-
-            if (closeOrder) {
-                //after closing the order from the contract delete it from the database
-                const removeOrder = await Order.findByIdAndDelete({ _id: id })
-
-                console.log("order removed", removeOrder)
-
-                res.send({ status: 200, removeOrder })
-            }
-
+            res.send({ status: 200, removeOrder })
         }
-
 
     } catch (error) {
         console.log("Unable to delete order from DB")
