@@ -8,7 +8,7 @@ Title: CryptoBets exchange - GMX Exchange Platform Implementation
 
 Description:
 
-CryptoBets exchange is an open-source project that implements the GMX Exchange platform, a cutting-edge decentralized exchange (DEX) designed to provide fast, secure, and efficient trading of digital assets. The platform is built on the Ethereum blockchain and leverages the latest advancements in blockchain technology.
+CryptoBets exchange is a project that implements the GMX Exchange platform, a cutting-edge decentralized exchange (DEX) designed to provide fast, secure, and efficient trading of digital assets. The platform is built on the Ethereum blockchain and leverages the latest advancements in blockchain technology.
 
 Key Features:
 - Decentralized Trading: CryptoBets exchange enables peer-to-peer trading without the need for intermediaries, providing users with full control of their assets and private keys.
