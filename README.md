@@ -24,10 +24,6 @@ Technology Stack:
 - Node.js: The GMX Exchange platform's backend infrastructure is powered by Node.js, providing a robust and scalable server-side environment for handling trading operations and other functionalities
 - MongoDB: The GMX Exchange platform uses MongoDB, a NoSQL database, to store and manage various data related to trading activities, user accounts, and other essential application data. MongoDB's flexibility and scalability make it an ideal choice for the platform's data management needs.
 
-## ERD
-![mobile](https://github.com/AnicetFantomas/YourGallery/assets/94958024/afeb896f-050e-4174-86a1-12d7ee1dfc35)
-
-
 
 ### Cloning the project
 
