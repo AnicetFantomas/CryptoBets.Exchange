@@ -59,6 +59,11 @@ Setup
 - yarn start 
 ```
 
+👤 **Anicet Murhula**
+
+<a href="https://github.com/AnicetFantomas" target="blank"><img align="center"
+      src="https://avatars.githubusercontent.com/u/94958024?s=400&u=d381903f2405198e53ab824f3b5f35f30158a1ac&v=4"
+      alt="adampithewan" height="50" width="50"/></a> **@AnicetFantomas**
 
 ## 🤝 Contributing
 
